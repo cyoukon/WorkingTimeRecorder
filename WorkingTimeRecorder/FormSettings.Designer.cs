@@ -92,7 +92,7 @@
             this.comboBoxGetTime.Location = new System.Drawing.Point(4, 19);
             this.comboBoxGetTime.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxGetTime.Name = "comboBoxGetTime";
-            this.comboBoxGetTime.Size = new System.Drawing.Size(77, 20);
+            this.comboBoxGetTime.Size = new System.Drawing.Size(89, 20);
             this.comboBoxGetTime.TabIndex = 3;
             this.comboBoxGetTime.SelectedIndexChanged += new System.EventHandler(this.comboBoxGetTime_SelectedIndexChanged);
             // 
@@ -114,7 +114,7 @@
             // labelGetTime
             // 
             this.labelGetTime.AutoSize = true;
-            this.labelGetTime.Location = new System.Drawing.Point(85, 22);
+            this.labelGetTime.Location = new System.Drawing.Point(97, 22);
             this.labelGetTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelGetTime.Name = "labelGetTime";
             this.labelGetTime.Size = new System.Drawing.Size(41, 12);
@@ -195,10 +195,13 @@
             this.textBoxSetWorkTime.Location = new System.Drawing.Point(82, 18);
             this.textBoxSetWorkTime.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxSetWorkTime.Name = "textBoxSetWorkTime";
-            this.textBoxSetWorkTime.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textBoxSetWorkTime.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.textBoxSetWorkTime.Size = new System.Drawing.Size(26, 21);
             this.textBoxSetWorkTime.TabIndex = 1;
             this.textBoxSetWorkTime.Text = "9";
+            this.textBoxSetWorkTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxSetWorkTime.TextChanged += new System.EventHandler(this.textBoxSetWorkTime_TextChanged);
+            this.textBoxSetWorkTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxSetWorkTime_KeyPress);
             // 
             // label1
             // 
@@ -235,8 +238,6 @@
             // checkBoxAutoStart
             // 
             this.checkBoxAutoStart.AutoSize = true;
-            this.checkBoxAutoStart.Checked = true;
-            this.checkBoxAutoStart.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxAutoStart.Location = new System.Drawing.Point(97, 94);
             this.checkBoxAutoStart.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAutoStart.Name = "checkBoxAutoStart";
@@ -244,6 +245,7 @@
             this.checkBoxAutoStart.TabIndex = 10;
             this.checkBoxAutoStart.Text = "开机自启";
             this.checkBoxAutoStart.UseVisualStyleBackColor = true;
+            this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
             // 
             // checkBoxTopMost
             // 
@@ -255,6 +257,7 @@
             this.checkBoxTopMost.TabIndex = 9;
             this.checkBoxTopMost.Text = "主窗体置顶显示";
             this.checkBoxTopMost.UseVisualStyleBackColor = true;
+            this.checkBoxTopMost.CheckedChanged += new System.EventHandler(this.checkBoxTopMost_CheckedChanged);
             // 
             // checkBoxShowInTaskBar
             // 
@@ -311,6 +314,7 @@
             this.buttonSetColor.TabIndex = 4;
             this.buttonSetColor.Text = "设置文字颜色";
             this.buttonSetColor.UseVisualStyleBackColor = true;
+            this.buttonSetColor.Click += new System.EventHandler(this.buttonSetColor_Click);
             // 
             // buttonSetFont
             // 
@@ -321,6 +325,7 @@
             this.buttonSetFont.TabIndex = 3;
             this.buttonSetFont.Text = "设置字体";
             this.buttonSetFont.UseVisualStyleBackColor = true;
+            this.buttonSetFont.Click += new System.EventHandler(this.buttonSetFont_Click);
             // 
             // buttonSetLocation
             // 
@@ -391,6 +396,7 @@
             this.Name = "FormSettings";
             this.Text = "设置";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSettings_FormClosing);
+            this.Load += new System.EventHandler(this.FormSettings_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

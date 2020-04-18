@@ -16,6 +16,8 @@ namespace WorkingTimeRecorder
         public Form1()
         {
             InitializeComponent();
+            this.BackColor = Color.White;
+            this.TransparencyKey = Color.White;
         }
 
         partial void Form1_Load(object sender, EventArgs e);
@@ -53,14 +55,60 @@ namespace WorkingTimeRecorder
         }
         public void SetFont(Font font)
         {
-            //this.label1.Font = font;
-            //this.label2.Font = font;
-            //label1.Top = label2.Height + 5;
+            this.label1.Font = font;
+            this.label2.Font = font;
+            label2.Top = label1.Height + 5;
+            this.Height = label2.Top + label2.Height + 40;
         }
         public void SetColor(Color color)
         {
-            //this.label1.ForeColor = (Color)color;
-            //this.label2.ForeColor = (Color)color;
+            this.label1.ForeColor = color;
+            this.label2.ForeColor = color;
+        }
+        public void SetTopMost(bool topMost)
+        {
+            this.TopMost = topMost;
+        }
+        public void SetOvertimeInfo(bool timer)
+        {
+            this.timer1.Enabled = timer;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            DateTime.TryParse(Settings.Default.startWorkTime, out DateTime offTime);
+            offTime = offTime.AddHours(Settings.Default.inFoTime);
+            TimeSpan timeSpan = DateTime.Now - offTime;
+            string str=timeSpan.TotalHours.ToString("F1");
+            if (Convert.ToDouble(str) >= 0)
+            {
+                if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
+                {
+                    MessageBox.Show("可以下班了");
+                    Settings.Default.inFoMessageBox = false;
+                }
+                if (Settings.Default.inFo2)
+                {
+                    this.label2.Visible = true;
+                    this.label2.Text = str;
+                }
+            }
+            else
+                this.label2.Visible = false;
+        }
+
+        private void 打开log文件夹ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string savePath = string.IsNullOrEmpty(Settings.Default.savePath) ? System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase : Settings.Default.savePath;
+            System.Diagnostics.Process.Start("explorer", savePath);
+        }
+
+        private void 重新判断出勤时间ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TimeLog.TimeLog timeLog = new TimeLog.TimeLog();
+            timeLog.Start(out string str);
+            this.label1.Text = str;
+            this.label2.Visible = false;
         }
     }
 }

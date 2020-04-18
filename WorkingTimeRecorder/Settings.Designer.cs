@@ -106,5 +106,89 @@ namespace WorkingTimeRecorder {
                 this["extranet"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("华文新魏, 26.2499981pt")]
+        public global::System.Drawing.Font font {
+            get {
+                return ((global::System.Drawing.Font)(this["font"]));
+            }
+            set {
+                this["font"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color color {
+            get {
+                return ((global::System.Drawing.Color)(this["color"]));
+            }
+            set {
+                this["color"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool topMost {
+            get {
+                return ((bool)(this["topMost"]));
+            }
+            set {
+                this["topMost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool inFo1 {
+            get {
+                return ((bool)(this["inFo1"]));
+            }
+            set {
+                this["inFo1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool inFo2 {
+            get {
+                return ((bool)(this["inFo2"]));
+            }
+            set {
+                this["inFo2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public int inFoTime {
+            get {
+                return ((int)(this["inFoTime"]));
+            }
+            set {
+                this["inFoTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool inFoMessageBox {
+            get {
+                return ((bool)(this["inFoMessageBox"]));
+            }
+            set {
+                this["inFoMessageBox"] = value;
+            }
+        }
     }
 }

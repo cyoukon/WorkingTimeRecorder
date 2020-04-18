@@ -10,8 +10,16 @@ namespace WorkingTimeRecorder
 {
     public partial class Form1 : Form
     {
+        WorkingTimeRecorder.TimeLog.TimeLog timeLog = new TimeLog.TimeLog();
+
         partial void Form1_Load(object sender, EventArgs e)
         {
+            this.Location = new System.Drawing.Point(Settings.Default.pointX, Settings.Default.pointY);
+            this.SetFont(Settings.Default.font);
+            this.SetColor(Settings.Default.color);
+            timeLog.Start(out string str);
+            this.label1.Text = str;
+            this.label2.Visible = false;
             SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
         }
@@ -27,11 +35,15 @@ namespace WorkingTimeRecorder
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
                 // 屏幕锁定
+                timeLog.End();
             }
 
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
             {
                 // 屏幕解锁
+                timeLog.Start(out string str);
+                this.label1.Text = str;
+                this.label2.Visible = false;
             }
         }
 
@@ -42,24 +54,25 @@ namespace WorkingTimeRecorder
         /// <param name="e"></param>
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
-            if (MessageBox.Show(this, "是否允许系统注销！", "系统提示", MessageBoxButtons.YesNo) != DialogResult.Yes)
-            {
-                e.Cancel = true;
-            }
-            else
-            {
-                e.Cancel = false;
-            }
-            SessionEndReasons reason = e.Reason;
-            switch (reason)
-            {
-                case SessionEndReasons.Logoff:
-                    MessageBox.Show("用户正在注销。操作系统继续运行，但启动此应用程序的用户正在注销。");
-                    break;
-                case SessionEndReasons.SystemShutdown:
-                    MessageBox.Show("操作系统正在关闭。");
-                    break;
-            }
+            //if (MessageBox.Show(this, "是否允许系统注销！", "系统提示", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            //{
+            //    e.Cancel = true;
+            //}
+            //else
+            //{
+            //    e.Cancel = false;
+            //}
+            //SessionEndReasons reason = e.Reason;
+            //switch (reason)
+            //{
+            //    case SessionEndReasons.Logoff:
+            //        MessageBox.Show("用户正在注销。操作系统继续运行，但启动此应用程序的用户正在注销。");
+            //        break;
+            //    case SessionEndReasons.SystemShutdown:
+            //        MessageBox.Show("操作系统正在关闭。");
+            //        break;
+            //}
+            timeLog.End();
         }
         //如果把上面的事件处理程序修改成如下  
         //private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)  
@@ -151,14 +164,23 @@ namespace WorkingTimeRecorder
                     switch (m.WParam.ToInt32())
                     {
                         case CtrlSpace: //热键ID
-                            this.Visible = true;
-                            this.WindowState = FormWindowState.Normal;//正常大小
-                            this.Activate(); //激活窗体
+                            if(this.Visible)
+                            {
+                                this.Hide();
+                            }
+                            else
+                            {
+                                this.Visible = true;
+                                this.WindowState = FormWindowState.Normal;//正常大小
+                                this.Activate(); //激活窗体
+                            }
                             break;
 #if DEBUG
                         case 0x3573:
                             WorkingTimeRecorder.TimeLog.TimeLog timeLog1 = new TimeLog.TimeLog();
-                                timeLog1.Start();
+                            timeLog.Start(out string str);
+                            this.label1.Text = str;
+                            this.label2.Visible = false;
                             break;
                         case 0x3574:
                             WorkingTimeRecorder.TimeLog.TimeLog timeLog2 = new TimeLog.TimeLog();
