@@ -1,0 +1,2 @@
+# WorkingTimeRecorder
+一个记录考勤和电脑使用时间的小工具
