@@ -79,7 +79,7 @@ namespace WorkingTimeRecorder
             DateTime.TryParse(Settings.Default.startWorkTime, out DateTime offTime);
             offTime = offTime.AddHours(Settings.Default.inFoTime);
             TimeSpan timeSpan = DateTime.Now - offTime;
-            string str=timeSpan.TotalHours.ToString("F1");
+            string str = timeSpan.TotalHours.ToString("F1");
             if (Convert.ToDouble(str) >= 0)
             {
                 if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)

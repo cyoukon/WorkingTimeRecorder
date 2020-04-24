@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace WorkingTimeRecorder
@@ -13,9 +15,21 @@ namespace WorkingTimeRecorder
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            using (Mutex mutex = new Mutex(true, Application.ProductName, out bool createNew))
+            {
+                if (createNew)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new Form1());
+                }
+                else
+                {
+                    MessageBox.Show("应用程序已经在运行中...");
+                    System.Threading.Thread.Sleep(1000);
+                    System.Environment.Exit(1);
+                }
+            }
         }
     }
 }
