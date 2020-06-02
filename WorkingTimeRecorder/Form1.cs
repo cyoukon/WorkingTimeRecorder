@@ -74,23 +74,29 @@ namespace WorkingTimeRecorder
             this.timer1.Enabled = timer;
         }
 
+        /// <summary>
+        /// 每分钟运行一次，检查是否到了下班时间
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
             DateTime.TryParse(Settings.Default.startWorkTime, out DateTime offTime);
-            offTime = offTime.AddHours(Settings.Default.inFoTime);
+            offTime = offTime.AddHours(Settings.Default.inFoTime); // 下班时间 = 开始工作时间 + 工作时间
             TimeSpan timeSpan = DateTime.Now - offTime;
-            string str = timeSpan.TotalHours.ToString("F1");
-            if (Convert.ToDouble(str) >= 0)
+            if (timeSpan.TotalHours >= 0)
             {
+                // 下班提醒 && 是否要显示提醒弹窗（每天只需要提醒一次）
                 if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
                 {
                     MessageBox.Show("可以下班了");
                     Settings.Default.inFoMessageBox = false;
                 }
+                // 显示已加班时间
                 if (Settings.Default.inFo2)
                 {
                     this.label2.Visible = true;
-                    this.label2.Text = str;
+                    this.label2.Text = ("已加班 " + timeSpan).Substring(0, 12);
                 }
             }
             else

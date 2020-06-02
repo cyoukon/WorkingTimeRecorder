@@ -20,6 +20,7 @@ namespace WorkingTimeRecorder
             timeLog.Start(out string str);
             this.label1.Text = str;
             this.label2.Visible = false;
+            SetOvertimeInfo(Settings.Default.inFo1 || Settings.Default.inFo2);
             SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
         }
@@ -154,7 +155,7 @@ namespace WorkingTimeRecorder
         private const int WM_HOTKEY = 0x312; //窗口消息-热键
         private const int WM_CREATE = 0x1; //窗口消息-创建
         private const int WM_DESTROY = 0x2; //窗口消息-销毁
-        private const int CtrlSpace = 0x3572; //热键ID
+        private const int CtrlShiftSpace = 0x3572; //热键ID
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
@@ -163,17 +164,10 @@ namespace WorkingTimeRecorder
                 case WM_HOTKEY: //窗口消息-热键ID
                     switch (m.WParam.ToInt32())
                     {
-                        case CtrlSpace: //热键ID
-                            if(this.Visible)
-                            {
-                                this.Hide();
-                            }
-                            else
-                            {
-                                this.Visible = true;
-                                this.WindowState = FormWindowState.Normal;//正常大小
-                                this.Activate(); //激活窗体
-                            }
+                        case CtrlShiftSpace: //热键ID
+                            this.Visible = true;
+                            this.WindowState = FormWindowState.Normal;//正常大小
+                            this.Activate(); //激活窗体
                             break;
 #if DEBUG
                         case 0x3573:
@@ -195,7 +189,7 @@ namespace WorkingTimeRecorder
                     }
                     break;
                 case WM_CREATE: //窗口消息-创建
-                    AppHotKey.RegKey(Handle, CtrlSpace, AppHotKey.KeyModifiers.Ctrl, Keys.Space); //热键为Ctrl+空格
+                    AppHotKey.RegKey(Handle, CtrlShiftSpace, AppHotKey.KeyModifiers.Ctrl | AppHotKey.KeyModifiers.Shift, Keys.Space); //热键为Ctrl+Shift+空格
 #if DEBUG
                     AppHotKey.RegKey(Handle, 0x3573, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.S);//start work
                     AppHotKey.RegKey(Handle, 0x3574, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.E);//end work
@@ -203,7 +197,7 @@ namespace WorkingTimeRecorder
 #endif
                     break;
                 case WM_DESTROY: //窗口消息-销毁
-                    AppHotKey.UnRegKey(Handle, CtrlSpace); //销毁热键
+                    AppHotKey.UnRegKey(Handle, CtrlShiftSpace); //销毁热键
 #if DEBUG
                     AppHotKey.UnRegKey(Handle, 0x3573); //销毁热键
                     AppHotKey.UnRegKey(Handle, 0x3574); //销毁热键

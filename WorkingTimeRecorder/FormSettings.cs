@@ -15,6 +15,7 @@ namespace WorkingTimeRecorder
     public partial class FormSettings : Form
     {
         private Form1 form1 = null;
+        bool FormSettingLoaded = false;
         public FormSettings(Form1 form)
         {
             InitializeComponent();
@@ -108,10 +109,14 @@ namespace WorkingTimeRecorder
             this.textBoxPath.Text = string.IsNullOrEmpty(Settings.Default.savePath) ? System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase : Settings.Default.savePath;
             this.comboBoxGetTime.SelectedIndex = Settings.Default.comboBoxGetTime;
             textBoxGetTime_TextChanged(sender, e);
+            this.checkBoxInfo1.Checked = Settings.Default.inFo1; // 下班提醒
+            this.checkBoxInfo2.Checked = Settings.Default.inFo2; // 显示已加班时间
             this.textBoxLocationX.Text = Settings.Default.pointX.ToString();
             this.textBoxLocationY.Text = Settings.Default.pointY.ToString();
             this.labelFont.Text = Settings.Default.font.Name + " " + Settings.Default.font.Size;
             this.labelColor.Text = Settings.Default.color.Name;
+
+            FormSettingLoaded = true;
         }
 
         private void buttonSetFont_Click(object sender, EventArgs e)
@@ -176,9 +181,12 @@ namespace WorkingTimeRecorder
 
         private void checkBoxInfo_CheckedChanged(object sender, EventArgs e)
         {
-            form1.SetOvertimeInfo(checkBoxInfo1.Checked || checkBoxInfo2.Checked);
-            Settings.Default.inFo1 = checkBoxInfo1.Checked;
-            Settings.Default.inFo2 = checkBoxInfo2.Checked;
+            if (FormSettingLoaded)
+            {
+                form1.SetOvertimeInfo(checkBoxInfo1.Checked || checkBoxInfo2.Checked);
+                Settings.Default.inFo1 = checkBoxInfo1.Checked;
+                Settings.Default.inFo2 = checkBoxInfo2.Checked;
+            }
         }
 
         private void textBoxSetWorkTime_TextChanged(object sender, EventArgs e)
@@ -268,6 +276,21 @@ namespace WorkingTimeRecorder
                 MessageBox.Show("当前版本为最新版，无需更新");
             }
             return result;
+        }
+
+        private void checkBoxMianForm_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未实现
+        }
+
+        private void checkBoxShowInTaskBar_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未实现
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未实现
         }
     }
 

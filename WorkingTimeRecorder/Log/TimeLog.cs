@@ -77,7 +77,7 @@ namespace WorkingTimeRecorder.TimeLog
                 Settings.Default.Save();
                 WriteInto考勤时间(endWorkTime, startWorkTime);
             }
-            Label1 = Settings.Default.startWorkTime;
+            Label1 = string.IsNullOrEmpty(Settings.Default.startWorkTime) ? startWorkTime : Settings.Default.startWorkTime;
         }
 
         private void WriteInto考勤时间(string endWorkTime, string startWorkTime)

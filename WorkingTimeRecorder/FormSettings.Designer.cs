@@ -271,6 +271,7 @@
             this.checkBoxShowInTaskBar.TabIndex = 8;
             this.checkBoxShowInTaskBar.Text = "在任务栏显示";
             this.checkBoxShowInTaskBar.UseVisualStyleBackColor = true;
+            this.checkBoxShowInTaskBar.CheckedChanged += new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
             // 
             // checkBoxMianForm
             // 
@@ -284,6 +285,7 @@
             this.checkBoxMianForm.TabIndex = 7;
             this.checkBoxMianForm.Text = "显示主窗体";
             this.checkBoxMianForm.UseVisualStyleBackColor = true;
+            this.checkBoxMianForm.CheckedChanged += new System.EventHandler(this.checkBoxMianForm_CheckedChanged);
             // 
             // labelColor
             // 
@@ -364,6 +366,7 @@
             this.checkBox1.TabIndex = 7;
             this.checkBox1.Text = "允许上传日志";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // buttonUpdate
             // 
