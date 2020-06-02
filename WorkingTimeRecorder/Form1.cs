@@ -89,8 +89,8 @@ namespace WorkingTimeRecorder
                 // 下班提醒 && 是否要显示提醒弹窗（每天只需要提醒一次）
                 if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
                 {
-                    MessageBox.Show("可以下班了");
                     Settings.Default.inFoMessageBox = false;
+                    MessageBox.Show("可以下班了");
                 }
                 // 显示已加班时间
                 if (Settings.Default.inFo2)
