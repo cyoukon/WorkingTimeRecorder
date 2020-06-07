@@ -145,41 +145,47 @@ namespace WorkingTimeRecorder
 
         private void checkBoxAutoStart_CheckedChanged(object sender, EventArgs e)
         {
-            try
+            if (FormSettingLoaded)
             {
-                string startupPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonStartup);
-                //设置开机自启动  
-                if (checkBoxAutoStart.Checked == true)
+                try
                 {
-                    //获得文件的当前路径
-                    string dir = Directory.GetCurrentDirectory();
-                    //获取可执行文件的全部路径
-                    string exeDir = dir + @"\WorkingTimeRecorder.exe";
-                    ShortcutCreator.CreateShortcut(startupPath, "WorkingTimeRecorder.lnk", exeDir);
+                    string startupPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonStartup);
+                    //设置开机自启动  
+                    if (checkBoxAutoStart.Checked == true)
+                    {
+                        //获得文件的当前路径
+                        string dir = Directory.GetCurrentDirectory();
+                        //获取可执行文件的全部路径
+                        string exeDir = dir + @"\WorkingTimeRecorder.exe";
+                        ShortcutCreator.CreateShortcut(startupPath, "WorkingTimeRecorder.lnk", exeDir);
+                    }
+                    //取消开机自启动  
+                    else
+                    {
+                        System.IO.File.Delete(startupPath + @"\WorkingTimeRecorder.lnk");
+                    }
+                    Settings.Default.autoStart = checkBoxAutoStart.Checked;
                 }
-                //取消开机自启动  
-                else
+                catch (UnauthorizedAccessException)
                 {
-                    System.IO.File.Delete(startupPath + @"\WorkingTimeRecorder.lnk");
+                    MessageBox.Show("设置失败，请以管理员权限启动后重试");
+                    this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
                 }
-                Settings.Default.autoStart = checkBoxAutoStart.Checked;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                MessageBox.Show("设置失败，请以管理员权限启动后重试");
-                this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
-            }
-            catch
-            {
-                MessageBox.Show("设置不了，放弃吧");
-                this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
+                catch
+                {
+                    MessageBox.Show("设置不了，放弃吧");
+                    this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
+                }
             }
         }
 
         private void checkBoxTopMost_CheckedChanged(object sender, EventArgs e)
         {
-            form1.SetTopMost(this.checkBoxTopMost.Checked);
-            Settings.Default.topMost = this.checkBoxTopMost.Checked;
+            if (FormSettingLoaded)
+            {
+                form1.SetTopMost(this.checkBoxTopMost.Checked);
+                Settings.Default.topMost = this.checkBoxTopMost.Checked;
+            }
         }
 
         private void checkBoxInfo_CheckedChanged(object sender, EventArgs e)
