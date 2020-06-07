@@ -10,18 +10,16 @@ namespace WorkingTimeRecorder
 {
     public partial class Form1 : Form
     {
-        WorkingTimeRecorder.TimeLog.TimeLog timeLog = new TimeLog.TimeLog();
-
         partial void Form1_Load(object sender, EventArgs e)
         {
             this.Location = new System.Drawing.Point(Settings.Default.pointX, Settings.Default.pointY);
             this.SetFont(Settings.Default.font);
             this.SetColor(Settings.Default.color);
-            timeLog.Start(out string str);
+            TimeLog.GetInstance().Start(out string str);
             this.label1.Text = str;
             this.label2.Visible = false;
             SetOvertimeInfo(Settings.Default.inFo1 || Settings.Default.inFo2);
-            SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
+            //SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
         }
 
@@ -36,18 +34,18 @@ namespace WorkingTimeRecorder
             if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionLock)
             {
                 // 屏幕锁定
-                timeLog.End();
+                TimeLog.GetInstance().End();
             }
 
             else if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
             {
                 // 屏幕解锁
-                timeLog.Start(out string str);
+                TimeLog.GetInstance().Start(out string str);
                 this.label1.Text = str;
                 this.label2.Visible = false;
             }
         }
-
+        /*
         /// <summary>
         /// 系统注销或关闭事件处理程序，  
         /// </summary>
@@ -73,7 +71,8 @@ namespace WorkingTimeRecorder
             //        MessageBox.Show("操作系统正在关闭。");
             //        break;
             //}
-            timeLog.End();
+            //
+            TimeLog.GetInstance().End();
         }
         //如果把上面的事件处理程序修改成如下  
         //private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)  
@@ -86,6 +85,7 @@ namespace WorkingTimeRecorder
         //SessionEnded事件同上，事件参数类为SessionEndedEventArgs，同SessionEndingEventArgs相比少了Cancel属性，Cancel属性同一些windows下的某些事件差不多，比如Form.Closing事件，Control.Validating事件。
 
         //补充，如果需要获取应用程序需要的系统信息，可以访问System.Windows.Forms.SystemInformation类，这也是一个很有用的类，它提供了一组静态属性。
+        */
         #endregion
 
         #region 设置全局热键
@@ -171,14 +171,12 @@ namespace WorkingTimeRecorder
                             break;
 #if DEBUG
                         case 0x3573:
-                            WorkingTimeRecorder.TimeLog.TimeLog timeLog1 = new TimeLog.TimeLog();
-                            timeLog.Start(out string str);
+                            TimeLog.GetInstance().Start(out string str);
                             this.label1.Text = str;
                             this.label2.Visible = false;
                             break;
                         case 0x3574:
-                            WorkingTimeRecorder.TimeLog.TimeLog timeLog2 = new TimeLog.TimeLog();
-                            timeLog2.End();
+                            TimeLog.GetInstance().End();
                             break;
                         case 0x3575:
                             Settings.Default.Reset();

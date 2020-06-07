@@ -115,6 +115,8 @@ namespace WorkingTimeRecorder
             this.textBoxLocationY.Text = Settings.Default.pointY.ToString();
             this.labelFont.Text = Settings.Default.font.Name + " " + Settings.Default.font.Size;
             this.labelColor.Text = Settings.Default.color.Name;
+            this.checkBoxAutoStart.Checked = Settings.Default.autoStart;
+            this.checkBoxTopMost.Checked = Settings.Default.topMost;
 
             FormSettingLoaded = true;
         }
@@ -160,6 +162,7 @@ namespace WorkingTimeRecorder
                 {
                     System.IO.File.Delete(startupPath + @"\WorkingTimeRecorder.lnk");
                 }
+                Settings.Default.autoStart = checkBoxAutoStart.Checked;
             }
             catch (UnauthorizedAccessException)
             {

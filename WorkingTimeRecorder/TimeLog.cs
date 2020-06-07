@@ -6,10 +6,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace WorkingTimeRecorder.TimeLog
+namespace WorkingTimeRecorder
 {
     class TimeLog
     {
+        static TimeLog instance = null;
+        private TimeLog() { Debug.WriteLine("实例化一次!"); }
+        public static TimeLog GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new TimeLog();
+            }
+            return instance;
+        }
         private string savePath = string.IsNullOrEmpty(Settings.Default.savePath) ? System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase : Settings.Default.savePath;
         /// <summary>
         /// 工作开始后的操作

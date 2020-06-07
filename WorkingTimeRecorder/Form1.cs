@@ -11,6 +11,8 @@ using System.Windows.Forms;
 
 namespace WorkingTimeRecorder
 {
+    public delegate void Messagedelegate();
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -89,8 +91,12 @@ namespace WorkingTimeRecorder
                 // 下班提醒 && 是否要显示提醒弹窗（每天只需要提醒一次）
                 if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
                 {
+                    Messagedelegate dgt = new Messagedelegate(() => {
+                        MessageBox.Show("可以下班了");
+                    });
+                    dgt.BeginInvoke(null, null);
                     Settings.Default.inFoMessageBox = false;
-                    MessageBox.Show("可以下班了");
+                    Settings.Default.Save();
                 }
                 // 显示已加班时间
                 if (Settings.Default.inFo2)
@@ -111,10 +117,14 @@ namespace WorkingTimeRecorder
 
         private void 重新判断出勤时间ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TimeLog.TimeLog timeLog = new TimeLog.TimeLog();
-            timeLog.Start(out string str);
+            TimeLog.GetInstance().Start(out string str);
             this.label1.Text = str;
             this.label2.Visible = false;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            TimeLog.GetInstance().End();
         }
     }
 }

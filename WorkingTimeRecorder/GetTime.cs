@@ -69,16 +69,27 @@ namespace WorkingTimeRecorder
             switch (System.Threading.Thread.CurrentThread.CurrentCulture.Name)
             {
                 case "ja-JP":
-                    output = output.Split(new char[] { 'は', 'で' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    output = output.Split(new char[] { 'は', 'で' }, StringSplitOptions.RemoveEmptyEntries)[1].Replace('?', ' ');
                     break;
                 case "zh-CN":
+                    string[] str = output.Split(new string[] { "是" ,"\r\n"}, System.StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i<str.Length; i++)
+                    {
+                        if (str[i].Contains("时间"))
+                        {
+                            output = str[i + 1].Replace('?', ' ');
+                            break;
+                        }
+                    }
+                    break;
                 case "en-US":
                 default:
-                    System.Windows.Forms.MessageBox.Show("只支持日语系统");
+                    System.Windows.Forms.MessageBox.Show("只支持中文和日语系统");
                     break;
             }
-
-            DateTime dt = DateTime.ParseExact(output, "yyyy/MM/dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
+            //使用DateTime.ParseExact，字符串表示形式的格式必须与指定的格式完全匹配，否则会引发异常(如 当 月份只有一位时)
+            //DateTime dt = DateTime.ParseExact(output, "yyyy/MM/dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
+            DateTime dt = Convert.ToDateTime(output, new DateTimeFormatInfo());
             return dt;
         }
         #endregion
