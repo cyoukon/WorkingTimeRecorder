@@ -20,14 +20,16 @@ namespace WorkingTimeRecorder
             }
             return instance;
         }
+
         private string savePath = string.IsNullOrEmpty(Settings.Default.savePath) ? System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase : Settings.Default.savePath;
+        private GetTime.TimeFormat time;
+
         /// <summary>
         /// 工作开始后的操作
         /// </summary>
         public void Start(out string Label1)
         {
-            GetTime getTime =new GetTime();
-            GetTime.TimeFormat time = getTime.GetTimeFormat(out bool result);
+            time = GetTime.GetTimeFormat(out bool result);
             string UnLock = "屏幕解锁时间：";
             using (StreamWriter file = new StreamWriter(savePath + time.yearMonth + "工作时间.txt", true, Encoding.UTF8))
             {
@@ -41,8 +43,7 @@ namespace WorkingTimeRecorder
         /// </summary>
         public void End()
         {
-            GetTime getTime = new GetTime();
-            GetTime.TimeFormat time = getTime.GetTimeFormat(out bool result);
+            time = GetTime.GetTimeFormat(out bool result);
             string Lock = "屏幕锁定时间：";
             using (StreamWriter file = new StreamWriter(savePath + time.yearMonth + "工作时间.txt", true, Encoding.UTF8))
             {
@@ -51,9 +52,9 @@ namespace WorkingTimeRecorder
             }
         }
 
-        public void ReadWorkingTime(out string Label1)
+        public void ReadWorkingTime(out string Label1, bool changeStartWorkTime = false, string newStartWorkTime = null)
         {
-            string workTimePath = savePath  + DateTime.Today.ToString("yyyyMM") + "工作时间.txt";
+            string workTimePath = savePath + time.yearMonth + "工作时间.txt";
             StreamReader sr = new StreamReader(workTimePath);
             string startWorkTime = DateTime.MinValue.ToString();
             string endWorkTime = DateTime.MinValue.ToString();
@@ -61,12 +62,16 @@ namespace WorkingTimeRecorder
             sr.Close();
             string[] str = read.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
+            int changeIndex = 0;
             for (int i = str.Length - 1; i >= 0; i--)
             {
-                if (str[i].Contains(DateTime.Today.ToString("yyyy/MM/dd")))
+                if (str[i].Contains(time.yearMonthDay))
                 {
                     if (str[i].Contains("解锁"))
+                    {
                         startWorkTime = str[i].Remove(0, 7);
+                        changeIndex = i;
+                    }
                 }
                 else if (str[i].Contains("锁定"))
                 {
@@ -74,25 +79,54 @@ namespace WorkingTimeRecorder
                     break;
                 }
             }
-            string lastLine = string.Empty;
-            if (File.Exists(savePath + DateTime.Today.ToString("yyyyMM") + "考勤时间.txt"))
+
+            if (changeStartWorkTime)
             {
-                lastLine = File.ReadLines(savePath + DateTime.Today.ToString("yyyyMM") + "考勤时间.txt").Last();
+                newStartWorkTime = time.yearMonthDay + " " + newStartWorkTime;
+                str[changeIndex] = str[changeIndex].Replace(startWorkTime, newStartWorkTime);
+                startWorkTime = newStartWorkTime;
+                string write = string.Empty;
+                for (int i = 0; i < str.Length; i++)
+                {
+                    write += str[i] + "\r\n";
+                }
+                File.Delete(workTimePath);
+                using (StreamWriter sw = new StreamWriter(workTimePath, true, Encoding.UTF8))
+                {
+                    sw.Write(write);
+                    sw.Close();
+                }
+            }
+
+            string lastLine = string.Empty;
+            if (File.Exists(savePath + time.yearMonth + "考勤时间.txt"))
+            {
+                lastLine = File.ReadLines(savePath + time.yearMonth + "考勤时间.txt").Last();
                 lastLine = lastLine.Split('：', ' ')[1];
             }
-            if (lastLine != startWorkTime.Split(' ')[0])
+            if (lastLine != startWorkTime.Split(' ')[0] || changeStartWorkTime)
             {
                 Settings.Default.startWorkTime = startWorkTime;
                 Settings.Default.inFoMessageBox = true;
                 Settings.Default.Save();
-                WriteInto考勤时间(endWorkTime, startWorkTime);
+                if (changeStartWorkTime)
+                {
+                    List<string> lines = new List<string>(File.ReadAllLines(savePath + time.yearMonth + "考勤时间.txt"));
+                    lines.RemoveAt(lines.Count - 1);
+                    lines.Add("上班时间：" + startWorkTime);
+                    File.WriteAllLines(savePath + time.yearMonth + "考勤时间.txt", lines.ToArray());
+                }
+                else
+                {
+                    WriteInto考勤时间(endWorkTime, startWorkTime);
+                }
             }
             Label1 = string.IsNullOrEmpty(Settings.Default.startWorkTime) ? startWorkTime : Settings.Default.startWorkTime;
         }
 
         private void WriteInto考勤时间(string endWorkTime, string startWorkTime)
         {
-            using (StreamWriter sw = new StreamWriter(savePath + DateTime.Today.ToString("yyyyMM") + "考勤时间.txt", true, Encoding.UTF8))
+            using (StreamWriter sw = new StreamWriter(savePath + time.yearMonth + "考勤时间.txt", true, Encoding.UTF8))
             {
                 sw.WriteLine("下班时间：" + endWorkTime);
                 sw.WriteLine("上班时间：" + startWorkTime);

@@ -7,10 +7,11 @@ using System.Text;
 
 namespace WorkingTimeRecorder
 {
-    class GetTime
+    static class GetTime
     {
         public struct TimeFormat
         {
+            public DateTime dateTime;
             public string fullTime;
             public string yearMonth;
             public string yearMonthDay;
@@ -22,7 +23,7 @@ namespace WorkingTimeRecorder
         /// 获取标准北京时间
         ///</summary>
         ///<returns></returns>
-        private DateTime GetBeijingTime()
+        private static DateTime GetBeijingTime()
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Settings.Default.extranet);
 
@@ -35,7 +36,7 @@ namespace WorkingTimeRecorder
             bool s = GMTStrParse(cc, out time);
             return time.AddHours(8); //GMT要加8个小时才是北京时间
         }
-        public bool GMTStrParse(string gmtStr, out DateTime gmtTime)  //抓取的date是GMT格式的字符串，这里转成datetime
+        private static bool GMTStrParse(string gmtStr, out DateTime gmtTime)  //抓取的date是GMT格式的字符串，这里转成datetime
         {
             CultureInfo enUS = new CultureInfo("en-US");
             bool s = DateTime.TryParseExact(gmtStr, "r", enUS, DateTimeStyles.None, out gmtTime);
@@ -44,7 +45,7 @@ namespace WorkingTimeRecorder
         #endregion
 
         #region 调用CMD获取局域网指定电脑时间 GetLocalNetworkTime
-        private DateTime GetLocalNetworkTime()
+        private static DateTime GetLocalNetworkTime()
         {
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             p.StartInfo.FileName = "cmd.exe";
@@ -97,7 +98,7 @@ namespace WorkingTimeRecorder
         /// <summary>
         /// 返回指定格式的时间
         /// </summary>
-        public TimeFormat GetTimeFormat(out bool result)
+        public static TimeFormat GetTimeFormat(out bool result)
         {
             result = true;
             DateTime dateTime = DateTime.Now;
@@ -122,6 +123,7 @@ namespace WorkingTimeRecorder
             {
                 result = false;
             }
+            timeFormat.dateTime = dateTime;
             timeFormat.fullTime = dateTime.ToString("yyyy/MM/dd HH:mm:ss");
             timeFormat.yearMonth = dateTime.ToString("yyyyMM");
             timeFormat.yearMonthDay = dateTime.ToString("yyyy/MM/dd");

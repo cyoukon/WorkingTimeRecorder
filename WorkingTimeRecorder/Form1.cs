@@ -46,7 +46,10 @@ namespace WorkingTimeRecorder
 
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (MessageBox.Show("确定要退出吗？", "WorkingTimeRecorder", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+            {
+                this.Close();
+            }
         }
 
         public void SetLocation(int x, int y)
@@ -85,13 +88,14 @@ namespace WorkingTimeRecorder
         {
             DateTime.TryParse(Settings.Default.startWorkTime, out DateTime offTime);
             offTime = offTime.AddHours(Settings.Default.inFoTime); // 下班时间 = 开始工作时间 + 工作时间
-            TimeSpan timeSpan = DateTime.Now - offTime;
+            TimeSpan timeSpan = GetTime.GetTimeFormat(out bool result).dateTime - offTime;
             if (timeSpan.TotalHours >= 0)
             {
                 // 下班提醒 && 是否要显示提醒弹窗（每天只需要提醒一次）
                 if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
                 {
-                    Messagedelegate dgt = new Messagedelegate(() => {
+                    Messagedelegate dgt = new Messagedelegate(() =>
+                    {
                         MessageBox.Show("可以下班了");
                     });
                     dgt.BeginInvoke(null, null);
@@ -115,11 +119,24 @@ namespace WorkingTimeRecorder
             System.Diagnostics.Process.Start("explorer", savePath);
         }
 
-        private void 重新判断出勤时间ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 修改出勤时间ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TimeLog.GetInstance().Start(out string str);
-            this.label1.Text = str;
-            this.label2.Visible = false;
+            string input = Microsoft.VisualBasic.Interaction.InputBox("请按以下格式输入上班开始的时间：\r\nHH:mm:ss", "", Settings.Default.startWorkTime.Remove(0, 11), -1, -1);
+            try
+            {
+                DateTime.ParseExact(input, "HH:mm:ss", System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None);
+                TimeLog.GetInstance().ReadWorkingTime(out string Label1, true, input.ToString());
+                this.label1.Text = Label1;
+                this.label2.Visible = false;
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("输入错误，修改无效！");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("修改失败！\r\n" + ex);
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

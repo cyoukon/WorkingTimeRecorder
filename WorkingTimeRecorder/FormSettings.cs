@@ -99,8 +99,7 @@ namespace WorkingTimeRecorder
 
         private void buttonGetTime_Click(object sender, EventArgs e)
         {
-            GetTime getTime = new GetTime();
-            GetTime.TimeFormat time = getTime.GetTimeFormat(out bool result);
+            GetTime.TimeFormat time = GetTime.GetTimeFormat(out bool result);
             this.labelGetTime.Text = result ? time.fullTime : "获取时间失败";
         }
 

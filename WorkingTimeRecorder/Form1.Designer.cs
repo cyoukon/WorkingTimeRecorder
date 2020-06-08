@@ -70,33 +70,33 @@
             this.设置ToolStripMenuItem,
             this.退出ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(173, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 114);
             // 
             // 打开log文件夹ToolStripMenuItem
             // 
             this.打开log文件夹ToolStripMenuItem.Name = "打开log文件夹ToolStripMenuItem";
-            this.打开log文件夹ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.打开log文件夹ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.打开log文件夹ToolStripMenuItem.Text = "打开log文件夹";
             this.打开log文件夹ToolStripMenuItem.Click += new System.EventHandler(this.打开log文件夹ToolStripMenuItem_Click);
             // 
             // 重新判断出勤时间ToolStripMenuItem
             // 
             this.重新判断出勤时间ToolStripMenuItem.Name = "重新判断出勤时间ToolStripMenuItem";
-            this.重新判断出勤时间ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.重新判断出勤时间ToolStripMenuItem.Text = "重新判断出勤时间";
-            this.重新判断出勤时间ToolStripMenuItem.Click += new System.EventHandler(this.重新判断出勤时间ToolStripMenuItem_Click);
+            this.重新判断出勤时间ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.重新判断出勤时间ToolStripMenuItem.Text = "修改出勤时间";
+            this.重新判断出勤时间ToolStripMenuItem.Click += new System.EventHandler(this.修改出勤时间ToolStripMenuItem_Click);
             // 
             // 设置ToolStripMenuItem
             // 
             this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.设置ToolStripMenuItem.Text = "设置";
             this.设置ToolStripMenuItem.Click += new System.EventHandler(this.设置ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
