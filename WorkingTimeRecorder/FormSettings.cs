@@ -64,16 +64,18 @@ namespace WorkingTimeRecorder
             {
                 case 0:
                     Settings.Default.comboBoxGetTime = 0;
-                    this.textBoxGetTime.Text = string.Empty;
+                    this.textBoxGetTime.Visible = false;
                     this.labelGetTime.Text = string.Empty;
                     break;
                 case 1:
                     Settings.Default.comboBoxGetTime = 1;
+                    this.textBoxGetTime.Visible = true;
                     this.textBoxGetTime.Text = Settings.Default.localNet;
                     this.labelGetTime.Text = "";
                     break;
                 case 2:
                     Settings.Default.comboBoxGetTime = 2;
+                    this.textBoxGetTime.Visible = true;
                     this.textBoxGetTime.Text = Settings.Default.extranet;
                     this.labelGetTime.Text = string.Empty;
                     break;
@@ -99,8 +101,12 @@ namespace WorkingTimeRecorder
 
         private void buttonGetTime_Click(object sender, EventArgs e)
         {
+            this.buttonGetTime.Cursor = Cursors.WaitCursor;
+            this.labelGetTime.Text = "时间获取中";
+            this.labelGetTime.Refresh();
             GetTime.TimeFormat time = GetTime.GetTimeFormat(out bool result);
             this.labelGetTime.Text = result ? time.fullTime : "获取时间失败";
+            this.buttonGetTime.Cursor = Cursors.Default;
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -146,6 +152,7 @@ namespace WorkingTimeRecorder
         {
             if (FormSettingLoaded)
             {
+                bool restart = false;
                 try
                 {
                     string startupPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonStartup);
@@ -156,7 +163,7 @@ namespace WorkingTimeRecorder
                         string dir = Directory.GetCurrentDirectory();
                         //获取可执行文件的全部路径
                         string exeDir = dir + @"\WorkingTimeRecorder.exe";
-                        ShortcutCreator.CreateShortcut(startupPath, "WorkingTimeRecorder.lnk", exeDir);
+                        ShortcutCreator.CreateShortcut(startupPath, "WorkingTimeRecorder", exeDir);
                     }
                     //取消开机自启动  
                     else
@@ -167,13 +174,38 @@ namespace WorkingTimeRecorder
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    MessageBox.Show("设置失败，请以管理员权限启动后重试");
+                    var ret = MessageBox.Show("设置失败，是否需要以管理员权限启动后重试？", "WorkingTimeRecorder", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    restart = ret == DialogResult.Yes;
+                    this.checkBoxAutoStart.CheckedChanged -= new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
                     this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
+                    this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
                 }
                 catch
                 {
                     MessageBox.Show("设置不了，放弃吧");
                     this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
+                }
+                finally
+                {
+                    if (restart)
+                    {
+                        try
+                        {
+                            ProcessStartInfo psi = new ProcessStartInfo();
+                            psi.WorkingDirectory = Environment.CurrentDirectory;
+                            psi.FileName = Application.ExecutablePath;
+                            psi.UseShellExecute = true;
+                            psi.Verb = "runas";
+                            Process p = new Process();
+                            p.StartInfo = psi;
+                            p.Start();
+                            Process.GetCurrentProcess().Kill();
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("程序无法获取Windows管理员身份运行，\n请手动使用Windows管理员身份运行", "WorkingTimeRecorder");
+                        }
+                    }
                 }
             }
         }
@@ -288,17 +320,26 @@ namespace WorkingTimeRecorder
 
         private void checkBoxMianForm_CheckedChanged(object sender, EventArgs e)
         {
-            // 未实现
+            this.checkBoxMianForm.CheckedChanged -= new System.EventHandler(this.checkBoxMianForm_CheckedChanged);
+            checkBoxMianForm.Checked = !checkBoxMianForm.Checked;
+            this.checkBoxMianForm.CheckedChanged += new System.EventHandler(this.checkBoxMianForm_CheckedChanged);
+            MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
         }
 
         private void checkBoxShowInTaskBar_CheckedChanged(object sender, EventArgs e)
         {
-            // 未实现
+            this.checkBoxShowInTaskBar.CheckedChanged -= new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
+            checkBoxShowInTaskBar.Checked = !checkBoxShowInTaskBar.Checked;
+            this.checkBoxShowInTaskBar.CheckedChanged += new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
+            MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            // 未实现
+            this.checkBox1.CheckedChanged -= new System.EventHandler(this.checkBox1_CheckedChanged);
+            checkBox1.Checked = !checkBox1.Checked;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
         }
     }
 

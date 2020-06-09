@@ -15,6 +15,7 @@ namespace WorkingTimeRecorder
             this.Location = new System.Drawing.Point(Settings.Default.pointX, Settings.Default.pointY);
             this.SetFont(Settings.Default.font);
             this.SetColor(Settings.Default.color);
+            this.TopMost = Settings.Default.topMost;
             TimeLog.GetInstance().Start(out string str);
             this.label1.Text = str;
             this.label2.Visible = false;
@@ -191,7 +192,7 @@ namespace WorkingTimeRecorder
 #if DEBUG
                     AppHotKey.RegKey(Handle, 0x3573, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.S);//start work
                     AppHotKey.RegKey(Handle, 0x3574, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.E);//end work
-                    AppHotKey.RegKey(Handle, 0x3574, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.C);//reset settings.settings
+                    AppHotKey.RegKey(Handle, 0x3575, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.C);//reset settings.settings
 #endif
                     break;
                 case WM_DESTROY: //窗口消息-销毁

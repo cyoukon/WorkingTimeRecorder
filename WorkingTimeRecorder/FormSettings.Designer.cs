@@ -123,6 +123,7 @@
             // 
             // buttonGetTime
             // 
+            this.buttonGetTime.Cursor = System.Windows.Forms.Cursors.Default;
             this.buttonGetTime.Font = new System.Drawing.Font("宋体", 8F);
             this.buttonGetTime.Location = new System.Drawing.Point(195, 34);
             this.buttonGetTime.Margin = new System.Windows.Forms.Padding(2);
@@ -161,6 +162,8 @@
             // checkBoxInfo2
             // 
             this.checkBoxInfo2.AutoSize = true;
+            this.checkBoxInfo2.Checked = true;
+            this.checkBoxInfo2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxInfo2.Location = new System.Drawing.Point(86, 44);
             this.checkBoxInfo2.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxInfo2.Name = "checkBoxInfo2";
@@ -172,6 +175,8 @@
             // checkBoxInfo1
             // 
             this.checkBoxInfo1.AutoSize = true;
+            this.checkBoxInfo1.Checked = true;
+            this.checkBoxInfo1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxInfo1.Location = new System.Drawing.Point(8, 44);
             this.checkBoxInfo1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxInfo1.Name = "checkBoxInfo1";
@@ -262,8 +267,6 @@
             // checkBoxShowInTaskBar
             // 
             this.checkBoxShowInTaskBar.AutoSize = true;
-            this.checkBoxShowInTaskBar.Checked = true;
-            this.checkBoxShowInTaskBar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxShowInTaskBar.Location = new System.Drawing.Point(4, 114);
             this.checkBoxShowInTaskBar.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxShowInTaskBar.Name = "checkBoxShowInTaskBar";

@@ -96,7 +96,7 @@ namespace WorkingTimeRecorder
                 {
                     Messagedelegate dgt = new Messagedelegate(() =>
                     {
-                        MessageBox.Show("可以下班了");
+                        MessageBox.Show("可以下班了", "WorkingTimeRecorder");
                     });
                     dgt.BeginInvoke(null, null);
                     Settings.Default.inFoMessageBox = false;
@@ -106,7 +106,7 @@ namespace WorkingTimeRecorder
                 if (Settings.Default.inFo2)
                 {
                     this.label2.Visible = true;
-                    this.label2.Text = ("已加班 " + timeSpan).Substring(0, 12);
+                    this.label2.Text = ("已加班 " + timeSpan).Substring(0, 9).Replace(":", "时") + "分";
                 }
             }
             else
@@ -122,20 +122,23 @@ namespace WorkingTimeRecorder
         private void 修改出勤时间ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string input = Microsoft.VisualBasic.Interaction.InputBox("请按以下格式输入上班开始的时间：\r\nHH:mm:ss", "", Settings.Default.startWorkTime.Remove(0, 11), -1, -1);
-            try
+            if (!string.IsNullOrEmpty(input))
             {
-                DateTime.ParseExact(input, "HH:mm:ss", System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None);
-                TimeLog.GetInstance().ReadWorkingTime(out string Label1, true, input.ToString());
-                this.label1.Text = Label1;
-                this.label2.Visible = false;
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("输入错误，修改无效！");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("修改失败！\r\n" + ex);
+                try
+                {
+                    DateTime.ParseExact(input, "HH:mm:ss", System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None);
+                    TimeLog.GetInstance().ReadWorkingTime(out string Label1, true, input.ToString());
+                    this.label1.Text = Label1;
+                    this.label2.Visible = false;
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("输入错误，修改无效！", "WorkingTimeRecorder");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("修改失败！\r\n" + ex, "WorkingTimeRecorder");
+                }
             }
         }
 
