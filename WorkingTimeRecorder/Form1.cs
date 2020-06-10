@@ -121,7 +121,7 @@ namespace WorkingTimeRecorder
 
         private void 修改出勤时间ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string input = Microsoft.VisualBasic.Interaction.InputBox("请按以下格式输入上班开始的时间：\r\nHH:mm:ss", "", Settings.Default.startWorkTime.Remove(0, 11), -1, -1);
+            string input = Microsoft.VisualBasic.Interaction.InputBox("请按以下格式输入上班开始的时间：\r\nHH:mm:ss", "WorkingTimeRecorder", Settings.Default.startWorkTime.Remove(0, 11), -1, -1);
             if (!string.IsNullOrEmpty(input))
             {
                 try

@@ -122,6 +122,7 @@ namespace WorkingTimeRecorder
             this.labelColor.Text = Settings.Default.color.Name;
             this.checkBoxAutoStart.Checked = Settings.Default.autoStart;
             this.checkBoxTopMost.Checked = Settings.Default.topMost;
+            this.textBoxSetWorkTime.Text = Settings.Default.inFoTime == 0 ? "9" : Settings.Default.inFoTime.ToString();
 
             FormSettingLoaded = true;
         }

@@ -121,7 +121,11 @@ namespace WorkingTimeRecorder
                     WriteInto考勤时间(endWorkTime, startWorkTime);
                 }
             }
-            Label1 = string.IsNullOrEmpty(Settings.Default.startWorkTime) ? startWorkTime : Settings.Default.startWorkTime;
+            if (string.IsNullOrEmpty(Settings.Default.startWorkTime))
+            {
+                Settings.Default.startWorkTime = startWorkTime;
+            }
+            Label1 = startWorkTime;
         }
 
         private void WriteInto考勤时间(string endWorkTime, string startWorkTime)
