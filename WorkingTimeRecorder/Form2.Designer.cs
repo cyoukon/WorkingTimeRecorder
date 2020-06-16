@@ -98,7 +98,6 @@ namespace WorkingTimeRecorder
             this.Name = "Form2";
             this.TopMost = true;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
-            this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -146,11 +145,6 @@ namespace WorkingTimeRecorder
             IntPtr MyRgn = PathToRegion(MyDC);
             //使用文字区域创建程序窗体
             SetWindowRgn(this.Handle, MyRgn, true);
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

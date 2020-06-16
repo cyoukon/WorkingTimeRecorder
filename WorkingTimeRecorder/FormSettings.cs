@@ -123,8 +123,8 @@ namespace WorkingTimeRecorder
             this.checkBoxAutoStart.Checked = Settings.Default.autoStart;
             this.checkBoxTopMost.Checked = Settings.Default.topMost;
             this.textBoxSetWorkTime.Text = Settings.Default.inFoTime == 0 ? "9" : Settings.Default.inFoTime.ToString();
-            checkBoxMianForm.checked = Settings.Default.showMainForm;
-            checkBoxShowInTaskBar.checked = Settings.Default.showInTaskBar;
+            checkBoxMianForm.Checked = Settings.Default.showMainForm;
+            checkBoxShowInTaskBar.Checked = Settings.Default.showInTaskBar;
 
             FormSettingLoaded = true;
         }
@@ -257,7 +257,7 @@ namespace WorkingTimeRecorder
             try
             {
                 string localPath = Application.ExecutablePath;
-                string netPath = @"##############";
+                string netPath = @"\\ZHAOKUN\_readonly_share\WorkingTimeRecorder.exe";
                 var localFvi = FileVersionInfo.GetVersionInfo(localPath);
                 var netFvi = FileVersionInfo.GetVersionInfo(netPath);
                 if (CompareVer(localFvi.FileVersion, netFvi.FileVersion, netPath))
@@ -325,8 +325,8 @@ namespace WorkingTimeRecorder
         {
             if (FormSettingLoaded)
             {
-                form1.SetVisible(checkBoxMianForm.checked);
-                Settings.Default.showMainForm = checkBoxMianForm.checked;
+                form1.SetForm1Visible(checkBoxMianForm.Checked);
+                Settings.Default.showMainForm = checkBoxMianForm.Checked;
             }
         }
 
@@ -334,8 +334,8 @@ namespace WorkingTimeRecorder
         {
             if (FormSettingLoaded)
             {
-                form1.SetForm2Visible(checkBoxShowInTaskBar.checked);
-                Settings.Default.showInTaskBar = checkBoxShowInTaskBar.checked;
+                form1.SetForm2Visible(checkBoxShowInTaskBar.Checked);
+                Settings.Default.showInTaskBar = checkBoxShowInTaskBar.Checked;
             }
         }
 

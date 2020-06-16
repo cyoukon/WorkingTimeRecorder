@@ -19,7 +19,7 @@ namespace WorkingTimeRecorder
             TimeLog.GetInstance().Start(out string str);
             this.label1.Text = str;
             this.label2.Visible = false;
-            SetForm1Visible(Settings.Default.showMainForm)
+            SetForm1Visible(Settings.Default.showMainForm);
             SetForm2Visible(Settings.Default.showInTaskBar);
             SetOvertimeInfo(Settings.Default.inFo1 || Settings.Default.inFo2);
             //SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);

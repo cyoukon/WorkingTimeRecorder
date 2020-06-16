@@ -1,17 +1,16 @@
-using System.Resources;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("WorkingTimeRecorder")]
+[assembly: AssemblyTitle("FileVersion")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WorkingTimeRecorder")]
-[assembly: AssemblyCopyright("By ZhaoKun。保留所有权利")]
+[assembly: AssemblyProduct("FileVersion")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("3eb6955b-adf2-452c-ba1b-1a72f85fda93")]
+[assembly: Guid("1abb02c8-41f3-4c0a-94f7-857b156474cc")]
 
 // 程序集的版本信息由下列四个值组成: 
 //
@@ -34,6 +33,4 @@ using System.Runtime.InteropServices;
 // 方法是按如下所示使用“*”: :
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
-[assembly: NeutralResourcesLanguage("zh")]
-
+[assembly: AssemblyFileVersion("1.0.0.0")]

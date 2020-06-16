@@ -1,5 +1,7 @@
 @echo off
 
+cd E:\WorkSpace\WorkingTimeRecorder
+
 :Main
 cls
 echo.
@@ -14,7 +16,7 @@ if defined input set input=%input:"=%
 if /i "%input%" == "1" (goto fun1)
 if /i "%input%" == "2" (goto fun2)
 if /i "%input%" == "3" (goto fun3)
-if /i "%input%" == "e" (goto exit)
+if /i "%input%" == "e" (goto Exit)
 else goto error
 
 :fun1
