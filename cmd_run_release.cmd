@@ -1,1 +1,0 @@
-start WorkingTimeRecorder\bin\Release\WorkingTimeRecorder.exe

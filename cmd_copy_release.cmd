@@ -1,1 +1,0 @@
-copy WorkingTimeRecorder\bin\Release\WorkingTimeRecorder.exe WorkingTimeRecorder.exe
