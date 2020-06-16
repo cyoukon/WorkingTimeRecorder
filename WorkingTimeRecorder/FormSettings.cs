@@ -329,10 +329,36 @@ namespace WorkingTimeRecorder
 
         private void checkBoxShowInTaskBar_CheckedChanged(object sender, EventArgs e)
         {
-            this.checkBoxShowInTaskBar.CheckedChanged -= new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
-            checkBoxShowInTaskBar.Checked = !checkBoxShowInTaskBar.Checked;
-            this.checkBoxShowInTaskBar.CheckedChanged += new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
-            MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
+                try
+                {
+                    //设置任务栏显示  
+                    if (checkBoxShowInTaskBar.Checked == true)
+                    {
+                        //Form1隐藏
+                        this.Visible = false;
+                        //Form2显示
+                        Form2 f2 = new Form2();
+                        f2.ShowDialog();
+                        this.Visible = true;
+                    }
+                    //取消任务栏显示  
+                    else
+                    {
+                        //Form2隐藏
+                        this.Visible = false;
+                        //Form1显示
+                        For1 f1 = new Form1();
+                        f1.ShowDialog();
+                        this.Visible = true;
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
+                    this.checkBoxShowInTaskBar.CheckedChanged -= new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
+                    this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
+                    this.checkBoxShowInTaskBar.CheckedChanged += new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
+                }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
