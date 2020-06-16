@@ -136,8 +136,8 @@ namespace WorkingTimeRecorder
             //设置文字输出字体
             IntPtr MyOldFont = SelectObject(MyDC, MyFont);
             //输出文字
-            TextOut(MyDC, 50, 50, "開始時間:", 10);
-            TextOut(MyDC, 50, 70, Settings.Default.startWorkTime, 10);
+            TextOut(MyDC, 50, 50, "出勤時間:", 10);
+            TextOut(MyDC, 50, 70, Settings.Default.startWorkTime.Remove(0, 11), 10);
             //恢复原始字体对象
             SelectObject(MyDC, MyOldFont);
             //结束记录轮廓路径绘制

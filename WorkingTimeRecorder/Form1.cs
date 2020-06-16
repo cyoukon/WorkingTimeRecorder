@@ -15,6 +15,9 @@ namespace WorkingTimeRecorder
 
     public partial class Form1 : Form
     {
+        public static FormSettings formSettings;//声明窗体类的静态变量
+        public static Form2 form2;//声明窗体类的静态变量
+
         public Form1()
         {
             InitializeComponent();
@@ -26,22 +29,24 @@ namespace WorkingTimeRecorder
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
-            this.Visible = true;
-            this.WindowState = FormWindowState.Normal;
-            this.Activate();
+            if (Settings.Default.showMainForm)
+            {
+                this.Visible = true;
+                this.WindowState = FormWindowState.Normal;
+                this.Activate();
+            }
         }
 
-        public static FormSettings form;//声明窗体类的静态变量
         private void 设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //防止重复打开
-            if (form == null || form.IsDisposed)
+            if (formSettings == null || formSettings.IsDisposed)
             {
-                form = new FormSettings(this);//加入this用于传location值，主窗体把自己的引用传给从窗体对象
-                form.Show();
+                formSettings = new FormSettings(this);//加入this用于传值，主窗体把自己的引用传给从窗体对象
+                formSettings.Show();
             }
             else
-                form.Activate();
+                formSettings.Activate();
         }
 
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -77,6 +82,24 @@ namespace WorkingTimeRecorder
         public void SetOvertimeInfo(bool timer)
         {
             this.timer1.Enabled = timer;
+        }
+
+        public void SetForm1Visible(bool visible)
+        {
+            this.Visible = visible;
+        }
+
+        public void SetForm2Visible(bool visible)
+        {
+            if (!(form2 == null || form2.IsDisposed))
+            {
+                form2.Close();
+            }
+            if (visible)
+            {
+                form2 = new Form2();
+                form2.Show();
+            }
         }
 
         /// <summary>
@@ -129,6 +152,7 @@ namespace WorkingTimeRecorder
                     DateTime.ParseExact(input, "HH:mm:ss", System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None);
                     TimeLog.GetInstance().ReadWorkingTime(out string Label1, true, input.ToString());
                     this.label1.Text = Label1;
+                    SetForm2Visible(Settings.Default.showInTaskBar);
                     this.label2.Visible = false;
                 }
                 catch (FormatException)

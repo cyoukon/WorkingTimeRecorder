@@ -19,6 +19,8 @@ namespace WorkingTimeRecorder
             TimeLog.GetInstance().Start(out string str);
             this.label1.Text = str;
             this.label2.Visible = false;
+            SetForm1Visible(Settings.Default.showMainForm)
+            SetForm2Visible(Settings.Default.showInTaskBar);
             SetOvertimeInfo(Settings.Default.inFo1 || Settings.Default.inFo2);
             //SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
@@ -43,6 +45,7 @@ namespace WorkingTimeRecorder
                 // 屏幕解锁
                 TimeLog.GetInstance().Start(out string str);
                 this.label1.Text = str;
+                SetForm2Visible(Settings.Default.showInTaskBar);
                 this.label2.Visible = false;
             }
         }
@@ -166,15 +169,19 @@ namespace WorkingTimeRecorder
                     switch (m.WParam.ToInt32())
                     {
                         case CtrlShiftSpace: //热键ID
-                            this.Visible = true;
-                            this.WindowState = FormWindowState.Normal;//正常大小
-                            this.Activate(); //激活窗体
+                            if (Settings.Default.showMainForm)
+                            {
+                                this.Visible = true;
+                                this.WindowState = FormWindowState.Normal;//正常大小
+                                this.Activate(); //激活窗体
+                            }
                             break;
 #if DEBUG
                         case 0x3573:
                             TimeLog.GetInstance().Start(out string str);
                             this.label1.Text = str;
                             this.label2.Visible = false;
+                            SetForm2Visible(Settings.Default.showInTaskBar);
                             break;
                         case 0x3574:
                             TimeLog.GetInstance().End();

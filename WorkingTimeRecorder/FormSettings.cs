@@ -123,6 +123,8 @@ namespace WorkingTimeRecorder
             this.checkBoxAutoStart.Checked = Settings.Default.autoStart;
             this.checkBoxTopMost.Checked = Settings.Default.topMost;
             this.textBoxSetWorkTime.Text = Settings.Default.inFoTime == 0 ? "9" : Settings.Default.inFoTime.ToString();
+            checkBoxMianForm.checked = Settings.Default.showMainForm;
+            checkBoxShowInTaskBar.checked = Settings.Default.showInTaskBar;
 
             FormSettingLoaded = true;
         }
@@ -321,44 +323,20 @@ namespace WorkingTimeRecorder
 
         private void checkBoxMianForm_CheckedChanged(object sender, EventArgs e)
         {
-            this.checkBoxMianForm.CheckedChanged -= new System.EventHandler(this.checkBoxMianForm_CheckedChanged);
-            checkBoxMianForm.Checked = !checkBoxMianForm.Checked;
-            this.checkBoxMianForm.CheckedChanged += new System.EventHandler(this.checkBoxMianForm_CheckedChanged);
-            MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
+            if (FormSettingLoaded)
+            {
+                form1.SetVisible(checkBoxMianForm.checked);
+                Settings.Default.showMainForm = checkBoxMianForm.checked;
+            }
         }
 
         private void checkBoxShowInTaskBar_CheckedChanged(object sender, EventArgs e)
         {
-                try
-                {
-                    //设置任务栏显示  
-                    if (checkBoxShowInTaskBar.Checked == true)
-                    {
-                        //Form1隐藏
-                        this.Visible = false;
-                        //Form2显示
-                        Form2 f2 = new Form2();
-                        f2.ShowDialog();
-                        this.Visible = true;
-                    }
-                    //取消任务栏显示  
-                    else
-                    {
-                        //Form2隐藏
-                        this.Visible = false;
-                        //Form1显示
-                        For1 f1 = new Form1();
-                        f1.ShowDialog();
-                        this.Visible = true;
-                    }
-                }
-                catch
-                {
-                    MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
-                    this.checkBoxShowInTaskBar.CheckedChanged -= new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
-                    this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
-                    this.checkBoxShowInTaskBar.CheckedChanged += new System.EventHandler(this.checkBoxShowInTaskBar_CheckedChanged);
-                }
+            if (FormSettingLoaded)
+            {
+                form1.SetForm2Visible(checkBoxShowInTaskBar.checked);
+                Settings.Default.showInTaskBar = checkBoxShowInTaskBar.checked;
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

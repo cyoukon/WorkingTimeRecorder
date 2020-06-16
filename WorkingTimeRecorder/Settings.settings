@@ -23,9 +23,6 @@
     <Setting Name="extranet" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://www.baidu.com</Value>
     </Setting>
-    <Setting Name="font" Type="System.Drawing.Font" Scope="User">
-      <Value Profile="(Default)">华文新魏, 26.2499981pt</Value>
-    </Setting>
     <Setting Name="color" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Black</Value>
     </Setting>
@@ -45,6 +42,15 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="autoStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="font" Type="System.Drawing.Font" Scope="User">
+      <Value Profile="(Default)">Microsoft Sans Serif, 26.2499981pt</Value>
+    </Setting>
+    <Setting Name="showMainForm" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="showInTaskBar" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
