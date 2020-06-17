@@ -45,26 +45,6 @@ namespace WorkingTimeRecorder
             MoveWindow(this.Handle, (rcMin.Width - this.Width) + 300, -45, this.Width, this.Height, true);
         }
 
-        public delegate void tempChange(object sender, EventArgs e);
-        public event tempChange OntempChange;
-        public Rectangle Temp
-        {
-            get
-            {
-                return rcMin;
-            }
-            set
-            {
-                if (rcMin != value)
-                {
-                    OntempChange(this, new EventArgs());
-                }
-                rcMin = value;
-                asd();
-            }
-        }
-
-
         /// <summary>
         /// 必要なデザイナー変数です。
         /// </summary>
