@@ -25,6 +25,8 @@ namespace WorkingTimeRecorder
         Rectangle rcShell = new Rectangle();
         Rectangle rcBar = new Rectangle();
         Rectangle rcMin = new Rectangle();
+        Rectangle rcMin_backup = new Rectangle();
+
         /// <summary>
         /// 任务栏尺寸取得
         /// </summary>
@@ -33,6 +35,7 @@ namespace WorkingTimeRecorder
             GetWindowRect(hShell, ref rcShell);
             GetWindowRect(hBar, ref rcBar);
             GetWindowRect(hMin, ref rcMin);
+            rcMin_backup = rcMin;
             SetParent(this.Handle, hMin);
             Rectangle screen = System.Windows.Forms.SystemInformation.VirtualScreen;
             int sWidth = screen.Width;
@@ -92,14 +95,23 @@ namespace WorkingTimeRecorder
             // 
             // Form1
             // 
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleDimensions = new System.Drawing.SizeF(500, 100);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(500, 100);
             this.Name = "Form2";
             this.TopMost = true;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.ResumeLayout(false);
             this.PerformLayout();
+            // 
+            // timer2
+            // 
+            this.timer2.Enabled = true;
+            this.timer2.Interval = 1000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+
         }
 
         #endregion
@@ -146,5 +158,7 @@ namespace WorkingTimeRecorder
             //使用文字区域创建程序窗体
             SetWindowRgn(this.Handle, MyRgn, true);
         }
+        private System.Windows.Forms.Timer timer2;
+
     }
 }
