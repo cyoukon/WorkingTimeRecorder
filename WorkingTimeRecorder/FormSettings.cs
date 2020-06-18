@@ -19,6 +19,13 @@ namespace WorkingTimeRecorder
         public FormSettings(Form1 form)
         {
             InitializeComponent();
+
+            int x = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Width - this.Width - 20;
+            int y = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Height - this.Height - 20;
+            Point p = new Point(x, y);
+            this.PointToScreen(p);
+            this.Location = p;
+
             form1 = form;
 
             this.textBoxLocationX.KeyDown += new KeyEventHandler(this.LocationDetermined);
@@ -132,6 +139,7 @@ namespace WorkingTimeRecorder
         private void buttonSetFont_Click(object sender, EventArgs e)
         {
             FontDialog fontDialog = new FontDialog();
+            fontDialog.Font = Settings.Default.font;
             if (fontDialog.ShowDialog() == DialogResult.OK)
             {
                 form1.SetFont(fontDialog.Font);
@@ -143,6 +151,7 @@ namespace WorkingTimeRecorder
         private void buttonSetColor_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
+            colorDialog.Color = Settings.Default.color;
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 form1.SetColor(colorDialog.Color);
@@ -174,6 +183,10 @@ namespace WorkingTimeRecorder
                         System.IO.File.Delete(startupPath + @"\WorkingTimeRecorder.lnk");
                     }
                     Settings.Default.autoStart = checkBoxAutoStart.Checked;
+                    if (Directory.Exists(startupPath + @"\WorkingTimeRecorder.lnk") == checkBoxAutoStart.Checked)
+                    {
+                        throw new System.ArgumentException($"设置失败，请检查 {startupPath} 目录下是否存在WorkingTimeRecorder快捷方式");
+                    }
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -183,10 +196,12 @@ namespace WorkingTimeRecorder
                     this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
                     this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    MessageBox.Show("设置不了，放弃吧");
+                    MessageBox.Show("设置失败 \n\r" + ex);
+                    this.checkBoxAutoStart.CheckedChanged -= new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
                     this.checkBoxAutoStart.Checked = !this.checkBoxAutoStart.Checked;
+                    this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
                 }
                 finally
                 {

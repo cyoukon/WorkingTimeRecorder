@@ -22,8 +22,8 @@ namespace WorkingTimeRecorder
         static IntPtr hBar = FindWindowEx(hShell, IntPtr.Zero, "ReBarWindow32", null);
         static IntPtr hMin = FindWindowEx(hBar, IntPtr.Zero, "MSTaskSwWClass", null);
 
-        Rectangle rcShell = new Rectangle();
-        Rectangle rcBar = new Rectangle();
+        //Rectangle rcShell = new Rectangle();
+        //Rectangle rcBar = new Rectangle();
         Rectangle rcMin = new Rectangle();
         Rectangle rcMin_backup = new Rectangle(); 
         static Rectangle screen = System.Windows.Forms.SystemInformation.VirtualScreen;

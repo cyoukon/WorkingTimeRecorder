@@ -30,6 +30,5 @@ namespace WorkingTimeRecorder
                 rcMin_backup = rcMin;
             }
         }
-
     }
 }
