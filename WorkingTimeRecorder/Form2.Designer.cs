@@ -25,24 +25,25 @@ namespace WorkingTimeRecorder
         Rectangle rcShell = new Rectangle();
         Rectangle rcBar = new Rectangle();
         Rectangle rcMin = new Rectangle();
-        Rectangle rcMin_backup = new Rectangle();
+        Rectangle rcMin_backup = new Rectangle(); 
+        static Rectangle screen = System.Windows.Forms.SystemInformation.VirtualScreen;
+        static int sWidth = screen.Width;
+        static int sHeight = screen.Height;
 
         /// <summary>
-        /// 任务栏尺寸取得
+        /// 调整任务栏宽度以及窗体位置
         /// </summary>
-        private void asd()
+        private void moveform2window()
         {
-            GetWindowRect(hShell, ref rcShell);
-            GetWindowRect(hBar, ref rcBar);
             GetWindowRect(hMin, ref rcMin);
             rcMin_backup = rcMin;
-            SetParent(this.Handle, hMin);
-            Rectangle screen = System.Windows.Forms.SystemInformation.VirtualScreen;
-            int sWidth = screen.Width;
-            int sHeight = screen.Height;
-
-            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width, rcMin.Bottom - rcMin.Top, true);
-            MoveWindow(this.Handle, (rcMin.Width - this.Width) + 300, -45, this.Width, this.Height, true);
+            int form2top = 5;
+            if ((sHeight - rcMin.Top) < 30)
+            {
+                form2top = -13;
+            }
+            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width - 10, rcMin.Bottom - rcMin.Top, true);
+            MoveWindow(this.Handle, rcMin.Right - rcMin.Left - this.Width + 10, form2top, this.Width, this.Height, true);
         }
 
         /// <summary>
@@ -73,12 +74,12 @@ namespace WorkingTimeRecorder
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // Form2
             // 
             this.components = new System.ComponentModel.Container();
-            this.AutoScaleDimensions = new System.Drawing.SizeF(500, 100);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(80, 100);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(500, 100);
+            this.ClientSize = new System.Drawing.Size(80, 100);
             this.Name = "Form2";
             this.TopMost = true;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
@@ -127,8 +128,8 @@ namespace WorkingTimeRecorder
             //设置文字输出字体
             IntPtr MyOldFont = SelectObject(MyDC, MyFont);
             //输出文字
-            TextOut(MyDC, 50, 50, "出勤時間:", 10);
-            TextOut(MyDC, 50, 70, Settings.Default.startWorkTime.Remove(0, 11), 10);
+            TextOut(MyDC, 0, 0, "出勤時間:", 10);
+            TextOut(MyDC, 0, 20, Settings.Default.startWorkTime.Remove(0, 11), 10);
             //恢复原始字体对象
             SelectObject(MyDC, MyOldFont);
             //结束记录轮廓路径绘制

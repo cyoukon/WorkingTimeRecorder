@@ -14,7 +14,8 @@ namespace WorkingTimeRecorder
         public Form2()
         {
             InitializeComponent();
-            asd();
+            SetParent(this.Handle, hBar);
+            moveform2window();
         }
         /// <summary>
         /// 任务栏表示时位置实时调整
@@ -24,9 +25,9 @@ namespace WorkingTimeRecorder
             GetWindowRect(hMin, ref rcMin);
             if (rcMin != rcMin_backup)
             {
+                moveform2window();
+                GetWindowRect(hMin, ref rcMin);
                 rcMin_backup = rcMin;
-                MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width, rcMin.Bottom - rcMin.Top, true);
-                MoveWindow(this.Handle, (rcMin.Width - this.Width) + 300, -45, this.Width, this.Height, true);
             }
         }
 
