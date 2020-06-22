@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -12,13 +13,17 @@ namespace WorkingTimeRecorder
     {
         partial void Form1_Load(object sender, EventArgs e)
         {
-            this.Location = new System.Drawing.Point(Settings.Default.pointX, Settings.Default.pointY);
+            this.BackColor = Color.White;
+            this.TransparencyKey = Color.White;
+            SetPenetrate();
+
             this.SetFont(Settings.Default.font);
             this.SetColor(Settings.Default.color);
             this.TopMost = Settings.Default.topMost;
             TimeLog.GetInstance().Start(out string str);
             this.label1.Text = str;
             this.label2.Visible = false;
+            this.SetLocation(Settings.Default.pointX, Settings.Default.pointY);
             SetForm1Visible(Settings.Default.showMainForm);
             SetForm2Visible(Settings.Default.showInTaskBar);
             SetOvertimeInfo(Settings.Default.inFo1 || Settings.Default.inFo2);
@@ -213,6 +218,45 @@ namespace WorkingTimeRecorder
                 default:
                     break;
             }
+        }
+        #endregion
+
+        #region 鼠标穿透
+        private const uint WS_EX_LAYERED = 0x80000;
+        private const int WS_EX_TRANSPARENT = 0x20;
+        private const int GWL_STYLE = (-16);
+        private const int GWL_EXSTYLE = (-20);
+        private const int LWA_ALPHA = 0;
+
+        [DllImport("user32", EntryPoint = "SetWindowLong")]
+        private static extern uint SetWindowLong(
+        IntPtr hwnd,
+        int nIndex,
+        uint dwNewLong
+        );
+
+        [DllImport("user32", EntryPoint = "GetWindowLong")]
+        private static extern uint GetWindowLong(
+        IntPtr hwnd,
+        int nIndex
+        );
+
+        [DllImport("user32", EntryPoint = "SetLayeredWindowAttributes")]
+        private static extern int SetLayeredWindowAttributes(
+        IntPtr hwnd,
+        int crKey,
+        int bAlpha,
+        int dwFlags
+        );
+
+        /// <summary> 
+        /// 设置窗体具有鼠标穿透效果 
+        /// </summary> 
+        public void SetPenetrate()
+        {
+            SetWindowLong(this.Handle, GWL_EXSTYLE, WS_EX_TRANSPARENT | WS_EX_LAYERED);
+            //SetLayeredWindowAttributes(this.Handle, 0, 100, LWA_ALPHA);
+            SetWindowLong(this.Handle, GWL_EXSTYLE, WS_EX_TRANSPARENT | WS_EX_LAYERED);
         }
         #endregion
     }

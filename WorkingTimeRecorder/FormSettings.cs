@@ -20,7 +20,7 @@ namespace WorkingTimeRecorder
         {
             InitializeComponent();
 
-            int x = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Width - this.Width - 20;
+            int x = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Width - this.Width - 200;
             int y = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Height - this.Height - 20;
             Point p = new Point(x, y);
             this.PointToScreen(p);
@@ -51,7 +51,10 @@ namespace WorkingTimeRecorder
         {
             int.TryParse(textBoxLocationX.Text, out int x);
             int.TryParse(textBoxLocationY.Text, out int y);
+            x = textBoxLocationX.Text.ToLower().Trim() == "r" ? 999999999 : x;
+            y = textBoxLocationY.Text.ToLower().Trim() == "d" ? 999999999 : y;
             form1.SetLocation(x, y);
+            
         }
 
         private void buttonPath_Click(object sender, EventArgs e)
@@ -123,8 +126,8 @@ namespace WorkingTimeRecorder
             textBoxGetTime_TextChanged(sender, e);
             this.checkBoxInfo1.Checked = Settings.Default.inFo1; // 下班提醒
             this.checkBoxInfo2.Checked = Settings.Default.inFo2; // 显示已加班时间
-            this.textBoxLocationX.Text = Settings.Default.pointX.ToString();
-            this.textBoxLocationY.Text = Settings.Default.pointY.ToString();
+            this.textBoxLocationX.Text = Settings.Default.pointX == 999999999 ? "r" : Settings.Default.pointX.ToString();
+            this.textBoxLocationY.Text = Settings.Default.pointY == 999999999 ? "d" : Settings.Default.pointY.ToString();
             this.labelFont.Text = Settings.Default.font.Name + " " + Settings.Default.font.Size;
             this.labelColor.Text = Settings.Default.color.Name;
             this.checkBoxAutoStart.Checked = Settings.Default.autoStart;
@@ -242,6 +245,10 @@ namespace WorkingTimeRecorder
             if (FormSettingLoaded)
             {
                 form1.SetOvertimeInfo(checkBoxInfo1.Checked || checkBoxInfo2.Checked);
+                if (!checkBoxInfo2.Checked)
+                {
+                    form1.SetOvertimeVisibleFalse();
+                }
                 Settings.Default.inFo1 = checkBoxInfo1.Checked;
                 Settings.Default.inFo2 = checkBoxInfo2.Checked;
             }

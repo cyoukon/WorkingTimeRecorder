@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="pointX" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">999999999</Value>
     </Setting>
     <Setting Name="pointY" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

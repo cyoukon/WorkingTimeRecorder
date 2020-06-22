@@ -21,8 +21,8 @@ namespace WorkingTimeRecorder
         public Form1()
         {
             InitializeComponent();
-            this.BackColor = Color.White;
-            this.TransparencyKey = Color.White;
+            this.label1.FontChanged += new System.EventHandler(this.LabelChanged);
+            this.label2.VisibleChanged += new System.EventHandler(this.LabelChanged);
         }
 
         partial void Form1_Load(object sender, EventArgs e);
@@ -59,9 +59,18 @@ namespace WorkingTimeRecorder
 
         public void SetLocation(int x, int y)
         {
-            this.Location = new Point(x, y);
             Settings.Default.pointX = x;
             Settings.Default.pointY = y;
+            x = x == 999999999 ? (Screen.PrimaryScreen.WorkingArea.Size.Width - this.Width) : x;
+            if (y == 999999999)
+            {
+                y = Screen.PrimaryScreen.WorkingArea.Size.Height - this.Height + 40;
+                if (!label2.Visible)
+                {
+                    y = y +  label1.Height;
+                }
+            }
+            this.Location = new Point(x, y);
         }
         public void SetFont(Font font)
         {
@@ -82,6 +91,11 @@ namespace WorkingTimeRecorder
         public void SetOvertimeInfo(bool timer)
         {
             this.timer1.Enabled = timer;
+        }
+
+        public void SetOvertimeVisibleFalse()
+        {
+            label2.Visible = false;
         }
 
         public void SetForm1Visible(bool visible)
@@ -130,10 +144,16 @@ namespace WorkingTimeRecorder
                 {
                     this.label2.Visible = true;
                     this.label2.Text = ("已加班 " + timeSpan).Substring(0, 9).Replace(":", "时") + "分";
+                    this.label2.Refresh();
                 }
             }
             else
                 this.label2.Visible = false;
+        }
+
+        private void LabelChanged(object sender, EventArgs e)
+        {
+            this.SetLocation(Settings.Default.pointX, Settings.Default.pointY);
         }
 
         private void 打开log文件夹ToolStripMenuItem_Click(object sender, EventArgs e)
