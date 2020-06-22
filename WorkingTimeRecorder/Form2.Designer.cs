@@ -22,8 +22,6 @@ namespace WorkingTimeRecorder
         static IntPtr hBar = FindWindowEx(hShell, IntPtr.Zero, "ReBarWindow32", null);
         static IntPtr hMin = FindWindowEx(hBar, IntPtr.Zero, "MSTaskSwWClass", null);
 
-        //Rectangle rcShell = new Rectangle();
-        //Rectangle rcBar = new Rectangle();
         Rectangle rcMin = new Rectangle();
         Rectangle rcMin_backup = new Rectangle(); 
         static Rectangle screen = System.Windows.Forms.SystemInformation.VirtualScreen;
@@ -38,12 +36,18 @@ namespace WorkingTimeRecorder
             GetWindowRect(hMin, ref rcMin);
             rcMin_backup = rcMin;
             int form2top = 5;
-            if ((sHeight - rcMin.Top) < 30)
+            if ((sHeight - rcMin.Top) < 50)  
+            // 任务栏使用小图标的场合，只显示时间
             {
                 form2top = -13;
             }
+            // 压缩任务栏大小
             MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width - 10, rcMin.Bottom - rcMin.Top, true);
+            // 移动窗体至语言栏左侧
             MoveWindow(this.Handle, rcMin.Right - rcMin.Left - this.Width + 10, form2top, this.Width, this.Height, true);
+            // 再次取得任务栏大小，作为监视对象
+            GetWindowRect(hMin, ref rcMin);
+            rcMin_backup = rcMin;
         }
 
         /// <summary>
@@ -80,6 +84,7 @@ namespace WorkingTimeRecorder
             this.AutoScaleDimensions = new System.Drawing.SizeF(80, 100);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(80, 100);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form2";
             this.TopMost = true;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);

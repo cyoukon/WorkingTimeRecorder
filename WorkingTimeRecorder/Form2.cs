@@ -26,8 +26,6 @@ namespace WorkingTimeRecorder
             if (rcMin != rcMin_backup)
             {
                 moveform2window();
-                GetWindowRect(hMin, ref rcMin);
-                rcMin_backup = rcMin;
             }
         }
     }
