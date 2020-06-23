@@ -23,19 +23,11 @@ namespace WorkingTimeRecorder
             InitializeComponent();
             this.label1.FontChanged += new System.EventHandler(this.LabelChanged);
             this.label2.VisibleChanged += new System.EventHandler(this.LabelChanged);
+
+            this.WindowState = Settings.Default.showMainForm ? FormWindowState.Normal : FormWindowState.Minimized;
         }
 
-        partial void Form1_Load(object sender, EventArgs e)
-        {
-            if (Settings.Default.showMainForm)
-            {
-                this.WindowState = FormWindowState.Normal;
-            }
-            else
-            {
-                this.WindowState = FormWindowState.Minimized;
-            }
-        }
+        partial void Form1_Load(object sender, EventArgs e);
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
