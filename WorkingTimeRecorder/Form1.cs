@@ -25,7 +25,17 @@ namespace WorkingTimeRecorder
             this.label2.VisibleChanged += new System.EventHandler(this.LabelChanged);
         }
 
-        partial void Form1_Load(object sender, EventArgs e);
+        partial void Form1_Load(object sender, EventArgs e)
+        {
+            if (Settings.Default.showMainForm)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
+        }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
