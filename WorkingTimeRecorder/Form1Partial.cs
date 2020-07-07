@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using QuickStart;
 
 namespace WorkingTimeRecorder
 {
@@ -165,6 +166,7 @@ namespace WorkingTimeRecorder
         private const int WM_CREATE = 0x1; //窗口消息-创建
         private const int WM_DESTROY = 0x2; //窗口消息-销毁
         private const int CtrlShiftSpace = 0x3572; //热键ID
+        private const int ShiftAltQ = 0x3576; //热键ID
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
@@ -194,6 +196,10 @@ namespace WorkingTimeRecorder
                         case 0x3575:
                             Settings.Default.Reset();
                             break;
+                        case ShiftAltQ:
+                            MainWindow wpfwindow = new MainWindow();
+                            wpfwindow.ShowDialog(); 
+                            break;
 #endif
                         default:
                             break;
@@ -201,6 +207,7 @@ namespace WorkingTimeRecorder
                     break;
                 case WM_CREATE: //窗口消息-创建
                     AppHotKey.RegKey(Handle, CtrlShiftSpace, AppHotKey.KeyModifiers.Ctrl | AppHotKey.KeyModifiers.Shift, Keys.Space); //热键为Ctrl+Shift+空格
+                    AppHotKey.RegKey(Handle, ShiftAltQ, AppHotKey.KeyModifiers.Shift | AppHotKey.KeyModifiers.Alt, Keys.Q); //热键为Ctrl+Shift+空格
 #if DEBUG
                     AppHotKey.RegKey(Handle, 0x3573, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.S);//start work
                     AppHotKey.RegKey(Handle, 0x3574, AppHotKey.KeyModifiers.Alt | AppHotKey.KeyModifiers.Ctrl, Keys.E);//end work
@@ -209,6 +216,7 @@ namespace WorkingTimeRecorder
                     break;
                 case WM_DESTROY: //窗口消息-销毁
                     AppHotKey.UnRegKey(Handle, CtrlShiftSpace); //销毁热键
+                    AppHotKey.UnRegKey(Handle, ShiftAltQ); //销毁热键
 #if DEBUG
                     AppHotKey.UnRegKey(Handle, 0x3573); //销毁热键
                     AppHotKey.UnRegKey(Handle, 0x3574); //销毁热键
