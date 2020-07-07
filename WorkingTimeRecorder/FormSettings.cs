@@ -135,6 +135,7 @@ namespace WorkingTimeRecorder
             this.textBoxSetWorkTime.Text = Settings.Default.inFoTime == 0 ? "9" : Settings.Default.inFoTime.ToString();
             checkBoxMianForm.Checked = Settings.Default.showMainForm;
             checkBoxShowInTaskBar.Checked = Settings.Default.showInTaskBar;
+            SetLabelDaysOff(Settings.Default.vacationDays);
 
             FormSettingLoaded = true;
         }
@@ -361,12 +362,15 @@ namespace WorkingTimeRecorder
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void CalculateDaysOff(object sender, EventArgs e)
         {
-            this.checkBox1.CheckedChanged -= new System.EventHandler(this.checkBox1_CheckedChanged);
-            checkBox1.Checked = !checkBox1.Checked;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            MessageBox.Show("暂不支持修改", "WorkingTimeRecorder");
+            VacationForm vacationForm = new VacationForm(this);
+            vacationForm.ShowDialog();
+        }
+
+        public void SetLabelDaysOff(float days)
+        {
+            labelDaysOff.Text = "休假剩余天数：" + days.ToString();
         }
     }
 

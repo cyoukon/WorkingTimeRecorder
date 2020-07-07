@@ -17,6 +17,13 @@ namespace WorkingTimeRecorder
             SetParent(this.Handle, hBar);
             moveform2window();
             FormClosed += Form2_FormClosed;
+            
+            ToolTip toolTip1 = new ToolTip();
+            toolTip1.AutoPopDelay = 5000;
+            toolTip1.InitialDelay = 100;
+            toolTip1.ReshowDelay = 500;
+            toolTip1.ShowAlways = true;
+            toolTip1.SetToolTip(this, "出勤時間" + Settings.Default.startWorkTime);
         }
         /// <summary>
         /// 任务栏表示时位置实时调整

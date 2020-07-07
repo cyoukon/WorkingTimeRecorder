@@ -77,6 +77,7 @@ namespace QuickStart
             {
                 iValue = iValue.PadRight(50 - key.Length) + "//" + comments;
             }
+            WritePrivateProfileString(section, key, iValue, path); // 写入
         }
 
         /// <summary>

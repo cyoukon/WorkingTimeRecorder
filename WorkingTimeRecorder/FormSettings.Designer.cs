@@ -54,8 +54,8 @@
             this.buttonSetLocation = new System.Windows.Forms.Button();
             this.textBoxLocationY = new System.Windows.Forms.TextBox();
             this.textBoxLocationX = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.labelDaysOff = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -359,18 +359,6 @@
             this.textBoxLocationX.Size = new System.Drawing.Size(29, 21);
             this.textBoxLocationX.TabIndex = 0;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(283, 177);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(96, 16);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "允许上传日志";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
             // buttonUpdate
             // 
             this.buttonUpdate.Location = new System.Drawing.Point(393, 173);
@@ -382,18 +370,30 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
+            // labelDaysOff
+            // 
+            this.labelDaysOff.AutoSize = true;
+            this.labelDaysOff.Location = new System.Drawing.Point(281, 178);
+            this.labelDaysOff.Name = "labelDaysOff";
+            this.labelDaysOff.Size = new System.Drawing.Size(95, 12);
+            this.labelDaysOff.TabIndex = 9;
+            this.labelDaysOff.Text = "休假剩余天数：0";
+            this.labelDaysOff.Click += new System.EventHandler(this.CalculateDaysOff);
+            this.labelDaysOff.DoubleClick += new System.EventHandler(this.CalculateDaysOff);
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(468, 206);
+            this.Controls.Add(this.labelDaysOff);
             this.Controls.Add(this.buttonUpdate);
-            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonPath);
             this.Controls.Add(this.textBoxPath);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
@@ -439,8 +439,8 @@
         private System.Windows.Forms.Button buttonSetLocation;
         private System.Windows.Forms.TextBox textBoxLocationY;
         private System.Windows.Forms.TextBox textBoxLocationX;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button buttonUpdate;
         private System.Windows.Forms.CheckBox checkBoxAutoStart;
+        private System.Windows.Forms.Label labelDaysOff;
     }
 }

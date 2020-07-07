@@ -226,5 +226,29 @@ namespace WorkingTimeRecorder {
                 this["showInTaskBar"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float vacationDays {
+            get {
+                return ((float)(this["vacationDays"]));
+            }
+            set {
+                this["vacationDays"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool autoCalculateVacationDays {
+            get {
+                return ((bool)(this["autoCalculateVacationDays"]));
+            }
+            set {
+                this["autoCalculateVacationDays"] = value;
+            }
+        }
     }
 }

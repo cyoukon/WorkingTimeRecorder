@@ -12,6 +12,8 @@ namespace WorkingTimeRecorder
 {
     public partial class Form1 : Form
     {
+        MainWindow wpfwindow;
+
         partial void Form1_Load(object sender, EventArgs e)
         {
             this.BackColor = Color.White;
@@ -183,6 +185,14 @@ namespace WorkingTimeRecorder
                                 this.Activate(); //激活窗体
                             }
                             break;
+                        case ShiftAltQ:
+                            if (wpfwindow != null)
+                            {
+                                wpfwindow.Close();
+                            }
+                            wpfwindow = new MainWindow();
+                            wpfwindow.ShowDialog();
+                            break;
 #if DEBUG
                         case 0x3573:
                             TimeLog.GetInstance().Start(out string str);
@@ -195,10 +205,6 @@ namespace WorkingTimeRecorder
                             break;
                         case 0x3575:
                             Settings.Default.Reset();
-                            break;
-                        case ShiftAltQ:
-                            MainWindow wpfwindow = new MainWindow();
-                            wpfwindow.ShowDialog(); 
                             break;
 #endif
                         default:
@@ -266,6 +272,15 @@ namespace WorkingTimeRecorder
             //SetLayeredWindowAttributes(this.Handle, 0, 100, LWA_ALPHA);
             SetWindowLong(this.Handle, GWL_EXSTYLE, WS_EX_TRANSPARENT | WS_EX_LAYERED);
         }
+        #endregion
+
+        #region 屏蔽快捷键关闭form1
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            //e.SuppressKeyPress = (e.Alt && e.KeyCode == Keys.F4);
+            e.SuppressKeyPress = (e.KeyData == (Keys.Alt | Keys.F4)); // 阻止当前控件接收按键。
+        }
         #endregion
     }
 }

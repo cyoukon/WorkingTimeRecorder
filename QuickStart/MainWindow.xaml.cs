@@ -39,24 +39,9 @@ namespace QuickStart
         {
             try
             {
-                Button btn = new Button
-                {
-                    Name = "Button_" + keys[count],
-                    Content = "Button _" + keys[count],
-                    Height = 23,
-                    Width = 64,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    Margin = new Thickness(10, 10, 0, 0),
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Visibility = Visibility.Visible,
-                    AllowDrop = true
-                };
-                btn.Click += new RoutedEventHandler(btn_click);
-                btn.Drop += new DragEventHandler(btn_Drop);
-                wraPanel.Children.Add(btn);
-
+                AddButton(count);
                 //IniHelper.Ini_Create(iniPath);
-                IniHelper.Ini_Write("Button", btn.Name, "ブランク", iniPath);
+                IniHelper.Ini_Write("Button", "Button_" + keys[count], "ブランク", iniPath);
 
                 count++;
             }
@@ -70,9 +55,10 @@ namespace QuickStart
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
             {
-                String[] files = (String[])e.Data.GetData(DataFormats.FileDrop);
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 IniHelper.Ini_Write("Button", (sender as Button).Name, files[0], iniPath);
-                (sender as Button).Content = System.IO.Path.GetFileName(files[0]).PadRight(40) + (sender as Button).Content;
+                string postfix = (sender as Button).Content.ToString().Substring((sender as Button).Content.ToString().Length - 3, 3);
+                (sender as Button).Content = System.IO.Path.GetFileName(files[0]) + postfix;
             }
         }
 
@@ -83,6 +69,7 @@ namespace QuickStart
             try
             {
                 System.Diagnostics.Process.Start(startProject);
+                this.Close();
             }
             catch
             {
@@ -92,12 +79,35 @@ namespace QuickStart
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            for (int i = 0; i < keys.Length; i++)
+            {
+                string val = IniHelper.Ini_Read("Button", "Button_" + keys[i], iniPath);
+                if (val == "ブランク") return;
+                AddButton(i, System.IO.Path.GetFileName(val) + " _" + keys[i]);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
+        }
+
+        private void AddButton(int count, string content = "")
+        {
+            Button btn = new Button
+            {
+                Name = "Button_" + keys[count],
+                Content = string.IsNullOrEmpty(content) ? "Button _" + keys[count] : content,
+                Height = 23,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(10, 10, 0, 0),
+                VerticalAlignment = VerticalAlignment.Top,
+                Visibility = Visibility.Visible,
+                AllowDrop = true
+            };
+            btn.Click += new RoutedEventHandler(btn_click);
+            btn.Drop += new DragEventHandler(btn_Drop);
+            wraPanel.Children.Add(btn);
         }
     }
 }

@@ -193,6 +193,7 @@ namespace WorkingTimeRecorder
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             TimeLog.GetInstance().End();
+            Settings.Default.Save();
         }
     }
 }

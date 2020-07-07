@@ -21,6 +21,8 @@ else goto error
 
 :fun1
 copy WorkingTimeRecorder\bin\Release\WorkingTimeRecorder.exe WorkingTimeRecorder.exe
+copy WorkingTimeRecorder\bin\Release\QuickStart.exe QuickStart.exe
+copy WorkingTimeRecorder\bin\Release\WorkingTimeRecorder.exe.config WorkingTimeRecorder.exe.config
 goto end
 
 :fun2
@@ -29,6 +31,8 @@ goto end
 
 :fun3
 copy WorkingTimeRecorder.exe F:\_readonly_share\WorkingTimeRecorder.exe
+copy QuickStart.exe F:\_readonly_share\QuickStart.exe
+copy WorkingTimeRecorder.exe.config F:\_readonly_share\WorkingTimeRecorder.exe.config
 goto end
 
 :error
