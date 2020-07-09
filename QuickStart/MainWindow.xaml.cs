@@ -31,7 +31,7 @@ namespace QuickStart
 
         string[] keys = new string[]
         {
-            "1","2","3","4","5","6","7","8","9","0",
+            "0","1","2","3","4","5","6","7","8","9",
             "a","b","c","d","e","f","g","h","i","j","k","l","m",
             "n","o","p","q","r","s","t","u","v","w","x","y","z"
         };
@@ -54,6 +54,14 @@ namespace QuickStart
 
         private void delButton_Click(object sender, RoutedEventArgs e)
         {
+            Button button = wraPanel.FindName("Button_" + keys[Count - 1]) as Button;
+            StackPanel stackPanel = button.FindName("stackPanel_" + keys[Count - 1]) as StackPanel;
+
+            stackPanel.UnregisterName("textBlock_" + keys[Count - 1]);
+            stackPanel.UnregisterName("image_" + keys[Count - 1]);
+            button.UnregisterName("stackPanel_" + keys[Count - 1]);
+            wraPanel.UnregisterName("Button_" + keys[Count - 1]);
+
             wraPanel.Children.RemoveAt(Count - 1);
             IniHelper.Ini_Write("Button", "Button_" + keys[Count - 1], "ブランク", IniPath);
             Count--;
@@ -67,8 +75,10 @@ namespace QuickStart
                 IniHelper.Ini_Write("Button", (sender as Button).Name, files[0], IniPath);
                 string str = (sender as Button).Name.ToString();
                 StackPanel stackPanel = (sender as Button).FindName(str.Replace("Button_", "stackPanel_")) as StackPanel;
-                TextBlock textBlock = stackPanel.FindName(stackPanel.Name.Replace("stackPanel_", "textBlock")) as TextBlock;
-                string postfix = textBlock.Text.ToString().Substring((sender as Button).Content.ToString().Length - 3, 3);
+                Image image = stackPanel.FindName(stackPanel.Name.Replace("stackPanel_", "image_")) as Image;
+                SetImageSource(files[0], ref image);
+                TextBlock textBlock = stackPanel.FindName(stackPanel.Name.Replace("stackPanel_", "textBlock_")) as TextBlock;
+                string postfix = textBlock.Text.Substring(textBlock.Text.Length - 3, 3);
                 textBlock.Text = System.IO.Path.GetFileName(files[0]) + postfix;
             }
         }
@@ -90,6 +100,15 @@ namespace QuickStart
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                this.Top = int.Parse(IniHelper.Ini_Read("Window", "top", IniPath));
+                this.Left = int.Parse(IniHelper.Ini_Read("Window", "left", IniPath));
+                this.Height = int.Parse(IniHelper.Ini_Read("Window", "height", IniPath));
+                this.Width = int.Parse(IniHelper.Ini_Read("Window", "width", IniPath));
+            }
+            catch { }
+
             for (int i = 0; i < keys.Length; i++)
             {
                 string val = IniHelper.Ini_Read("Button", "Button_" + keys[i], IniPath);
@@ -101,7 +120,14 @@ namespace QuickStart
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            string top = this.Top.ToString();
+            string left = this.Left.ToString();
+            string height = this.Height.ToString();
+            string width = this.Width.ToString();
+            IniHelper.Ini_Write("Window", "top", top, IniPath);
+            IniHelper.Ini_Write("Window", "left", left, IniPath);
+            IniHelper.Ini_Write("Window", "height", height, IniPath);
+            IniHelper.Ini_Write("Window", "width", width, IniPath);
         }
 
         //参考 https://blog.csdn.net/wushang923/article/details/6688056?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
@@ -127,13 +153,29 @@ namespace QuickStart
             stackPanel.Name = btn.Name.Replace("Button_", "stackPanel_");
             btn.RegisterName(btn.Name.Replace("Button_", "stackPanel_"), stackPanel);
 
-            string name = string.Empty;
+            Image image = new Image();
+            SetImageSource(path, ref image);
+            image.Stretch = Stretch.Uniform;
+            image.HorizontalAlignment = HorizontalAlignment.Left;
+            stackPanel.Children.Add(image);
+            image.Name = btn.Name.Replace("Button_", "image_");
+            stackPanel.RegisterName(btn.Name.Replace("Button_", "image_"), image);
+
+            string name = System.IO.Path.GetFileName(path);
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = string.IsNullOrEmpty(name) ? "Button_" + keys[count] :
+                    System.IO.Path.GetFileName(name) + " _" + keys[count];
+            stackPanel.Children.Add(textBlock);
+            textBlock.Name = btn.Name.Replace("Button_", "textBlock_");
+            stackPanel.RegisterName(btn.Name.Replace("Button_", "textBlock_"), textBlock);
+        }
+
+        private void SetImageSource(string path, ref Image image)
+        {
             if (!string.IsNullOrEmpty(path))
             {
-                Image image = new Image();
                 if (File.Exists(path))
                 {
-                    name = System.IO.Path.GetFileName(path);
                     var icon = System.Drawing.Icon.ExtractAssociatedIcon(path);
                     var bitmap = icon.ToBitmap();
                     IntPtr hBitmap = bitmap.GetHbitmap();
@@ -144,24 +186,18 @@ namespace QuickStart
                 }
                 else if (Directory.Exists(path))
                 {
-                    name = System.IO.Path.GetFileName(path);
                     image.Source = new BitmapImage(new Uri("Image\\folder.png", UriKind.Relative));
                 }
                 else
                 {
-                    throw new PathNotExistException("路径" + path + "不存在");
+                    //throw new PathNotExistException("路径" + path + "不存在");
+                    MessageBox.Show("路径" + path + "不存在");
                 }
-                image.Stretch = Stretch.Uniform;
-                image.HorizontalAlignment = HorizontalAlignment.Left;
-                stackPanel.Children.Add(image);
             }
-
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = string.IsNullOrEmpty(name) ? "Button _" + keys[count] :
-                    System.IO.Path.GetFileName(name) + " _" + keys[count];
-            stackPanel.Children.Add(textBlock);
-            textBlock.Name = btn.Name.Replace("Button_", "textBlock_");
-            stackPanel.RegisterName(btn.Name.Replace("Button_", "textBlock_"), textBlock);
+            else
+            {
+                image.Source = new BitmapImage(new Uri("Image\\default.png", UriKind.Relative));
+            }
         }
 
         /* 方法添加button，不方便设置样式
@@ -210,7 +246,7 @@ namespace QuickStart
 
         private void Window_MouseLeave(object sender, MouseEventArgs e)
         {
-            Opacity = 0.4;
+            Opacity = 0.6;
         }
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
@@ -221,6 +257,22 @@ namespace QuickStart
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine(string.Format("e.ImeProcessedKey = {0}, e.Key = {1}", e.ImeProcessedKey, e.Key));
+            try
+            {
+                int enterKey = e.Key == Key.ImeProcessed ? (int)e.ImeProcessedKey : (int)(e.Key);
+                enterKey -= 34;
+                Button button = wraPanel.FindName("Button_" + keys[enterKey]) as Button;
+                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));// 触发button点击事件
+            }
+            catch
+            {
+
+            }
         }
     }
 
