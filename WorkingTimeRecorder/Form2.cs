@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace WorkingTimeRecorder
@@ -40,7 +34,7 @@ namespace WorkingTimeRecorder
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
         {
             GetWindowRect(hMin, ref rcMin);
-            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left + 10, rcMin.Bottom - rcMin.Top, true);
+            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left, rcMin.Bottom - rcMin.Top, true);
         }
     }
 }

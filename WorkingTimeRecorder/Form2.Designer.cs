@@ -1,10 +1,6 @@
 ﻿using System.Drawing;
 using System;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Data;
-using System.ComponentModel;
-using System.Collections;
 
 namespace WorkingTimeRecorder
 {
@@ -35,16 +31,11 @@ namespace WorkingTimeRecorder
         {
             GetWindowRect(hMin, ref rcMin);
             rcMin_backup = rcMin;
-            int form2top = 5;
-            if ((sHeight - rcMin.Top) < 50)  
-            // 任务栏使用小图标的场合，只显示时间
-            {
-                form2top = -13;
-            }
+            double form2top = (sHeight - rcMin.Top - 10) * 0.5;// 居中显示
             // 压缩任务栏大小
-            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width - 10, rcMin.Bottom - rcMin.Top, true);
+            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width, rcMin.Bottom - rcMin.Top, true);
             // 移动窗体至语言栏左侧
-            MoveWindow(this.Handle, rcMin.Right - rcMin.Left - this.Width + 10, form2top, this.Width, this.Height, true);
+            MoveWindow(this.Handle, rcMin.Right - rcMin.Left - this.Width, (int)form2top, this.Width, this.Height, true);
             // 再次取得任务栏大小，作为监视对象
             GetWindowRect(hMin, ref rcMin);
             rcMin_backup = rcMin;
@@ -81,9 +72,9 @@ namespace WorkingTimeRecorder
             // Form2
             // 
             this.components = new System.ComponentModel.Container();
-            this.AutoScaleDimensions = new System.Drawing.SizeF(80, 100);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(50, 10);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(80, 100);
+            this.ClientSize = new System.Drawing.Size(50, 10);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form2";
             this.TopMost = true;
@@ -133,8 +124,7 @@ namespace WorkingTimeRecorder
             //设置文字输出字体
             IntPtr MyOldFont = SelectObject(MyDC, MyFont);
             //输出文字
-            TextOut(MyDC, 0, 0, "出勤時間:", 10);
-            TextOut(MyDC, 0, 20, Settings.Default.startWorkTime.Remove(0, 11), 10);
+            TextOut(MyDC, 0, 0, Settings.Default.startWorkTime.Remove(0, 11), 10);
             //恢复原始字体对象
             SelectObject(MyDC, MyOldFont);
             //结束记录轮廓路径绘制

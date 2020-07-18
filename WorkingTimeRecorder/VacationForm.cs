@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace WorkingTimeRecorder
@@ -18,28 +12,9 @@ namespace WorkingTimeRecorder
             formSettings = form;
         }
 
-        private void radioButtonVacation_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.autoCalculateVacationDays = radioButtonAutomatic.Checked;
-            if (radioButtonAutomatic.Checked)
-            {
-                groupBox1.Hide();
-                groupBox2.Show();
-            }
-            else
-            {
-                groupBox1.Show();
-                groupBox2.Hide();
-            }
-        }
-
         private void VacationForm_Load(object sender, EventArgs e)
         {
-            radioButtonAutomatic.Checked = Settings.Default.autoCalculateVacationDays;
             textBox1.Text = Settings.Default.vacationDays.ToString();
-            //textBox1.SelectAll();
-            groupBox1.Visible = !Settings.Default.autoCalculateVacationDays;
-            groupBox2.Visible = !groupBox1.Visible;
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
