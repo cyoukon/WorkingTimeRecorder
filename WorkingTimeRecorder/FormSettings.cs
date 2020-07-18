@@ -182,7 +182,8 @@ namespace WorkingTimeRecorder
                         System.IO.File.Delete(startupPath + @"\WorkingTimeRecorder.lnk");
                     }
                     Settings.Default.autoStart = checkBoxAutoStart.Checked;
-                    if (Directory.Exists(startupPath + @"\WorkingTimeRecorder.lnk") == checkBoxAutoStart.Checked)
+                    bool status = string.IsNullOrEmpty(ShortcutCreator.ReadShortcut(startupPath + @"\WorkingTimeRecorder.lnk"));
+                    if (status == checkBoxAutoStart.Checked)
                     {
                         throw new System.ArgumentException($"设置失败，请检查 {startupPath} 目录下是否存在WorkingTimeRecorder快捷方式");
                     }
@@ -275,7 +276,7 @@ namespace WorkingTimeRecorder
             try
             {
                 string localPath = Application.ExecutablePath;
-                string netPath = @"\\ZHAOKUN\_readonly_share\WorkingTimeRecorder.exe";
+                string netPath = @"\\ZHAOKUN\_readonly_share\WorkingTimeRecorder\WorkingTimeRecorder.exe";
                 var localFvi = FileVersionInfo.GetVersionInfo(localPath);
                 var netFvi = FileVersionInfo.GetVersionInfo(netPath);
                 if (CompareVer(localFvi.FileVersion, netFvi.FileVersion, netPath))
@@ -299,7 +300,7 @@ namespace WorkingTimeRecorder
             }
             catch
             {
-                ///////////
+                MessageBox.Show("检查更新失败！");
             }
         }
 
@@ -420,6 +421,22 @@ namespace WorkingTimeRecorder
         {
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);//获取桌面文件夹路径
             CreateShortcut(desktop, shortcutName, targetPath, description, iconLocation);
+        }
+
+        /// <summary>
+        /// 读取一个快捷方式的信息
+        /// </summary>
+        /// <param name="lnkFilePath"></param>
+        /// <returns></returns>
+        public static string ReadShortcut(string lnkFilePath)
+        {
+            var shellType = Type.GetTypeFromProgID("WScript.Shell");
+            dynamic shell = Activator.CreateInstance(shellType);
+            var shortcut = shell.CreateShortcut(lnkFilePath);
+
+            //var TargetPath = shortcut.TargetPath;// 包含文件名
+            //var Arguments = shortcut.Arguments;
+            return shortcut.WorkingDirectory;// 不含文件名
         }
     }
     #endregion
