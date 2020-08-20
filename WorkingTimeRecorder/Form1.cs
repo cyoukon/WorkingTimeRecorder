@@ -121,8 +121,15 @@ namespace WorkingTimeRecorder
             DateTime.TryParse(Settings.Default.startWorkTime, out DateTime offTime);
             offTime = offTime.AddHours(Settings.Default.inFoTime); // 下班时间 = 开始工作时间 + 工作时间
             TimeSpan timeSpan = GetTime.GetTimeFormat(out bool result).dateTime - offTime;
-            if (timeSpan.TotalHours >= 0)
+            double time = timeSpan.TotalHours;
+            if (time > -0.1 && time < 0)
             {
+                timer1.Interval = (int)(-time * 3600000) + 1000;
+            }
+            if (time >= 0)
+            {
+                timer1.Interval = 60000; // 恢复为1分钟一次
+
                 // 下班提醒 && 是否要显示提醒弹窗（每天只需要提醒一次）
                 if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
                 {
