@@ -124,7 +124,7 @@ namespace WorkingTimeRecorder
             double time = timeSpan.TotalHours;
             if (time > -0.1 && time < 0)
             {
-                timer1.Interval = (int)(-time * 3600000) + 1000;
+                timer1.Interval = (int)(-time * 3600000);
             }
             if (time >= 0)
             {
