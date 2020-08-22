@@ -106,6 +106,11 @@ namespace WorkingTimeRecorder
 
         private void buttonGetTime_Click(object sender, EventArgs e)
         {
+            if (comboBoxGetTime.SelectedItem.ToString() == "外网时间")
+            {
+                FormProxy formProxy = new FormProxy();
+                formProxy.ShowDialog();
+            }
             this.buttonGetTime.Cursor = Cursors.WaitCursor;
             this.labelGetTime.Text = "时间获取中";
             this.labelGetTime.Refresh();

@@ -27,6 +27,17 @@ namespace WorkingTimeRecorder
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Settings.Default.extranet);
 
+            // 设置代理
+            if (Settings.Default.isProxy)
+            {
+                ServicePointManager.Expect100Continue = false;
+                WebProxy mWebProxy = new WebProxy();
+                Uri newUri = new Uri("http://" + Settings.Default.extranetProxy + ":" + Settings.Default.extranetPort);
+                mWebProxy.Address = newUri;
+                mWebProxy.Credentials = new NetworkCredential(Settings.Default.extranetUserName, Settings.Default.extranetUserPwd);
+                request.Proxy = mWebProxy;
+            }
+
             request.Method = "HEAD";
             request.AllowAutoRedirect = false;
             HttpWebResponse reponse = (HttpWebResponse)request.GetResponse();

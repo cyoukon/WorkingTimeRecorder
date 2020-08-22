@@ -48,7 +48,7 @@ namespace WorkingTimeRecorder
         {
             if (MessageBox.Show("确定要退出吗？", "WorkingTimeRecorder", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
             {
-                this.Close();
+                System.Environment.Exit(0);
             }
         }
 
