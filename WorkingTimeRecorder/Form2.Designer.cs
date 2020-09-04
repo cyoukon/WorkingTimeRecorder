@@ -14,6 +14,9 @@ namespace WorkingTimeRecorder
         static extern bool GetWindowRect(IntPtr hWnd, ref Rectangle lpRect);
         [DllImport("user32.dll")]
         static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool BRePaint);
+        [DllImport("user32.dll")]
+        public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
+
         static IntPtr hShell = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", null);
         static IntPtr hBar = FindWindowEx(hShell, IntPtr.Zero, "ReBarWindow32", null);
         static IntPtr hMin = FindWindowEx(hBar, IntPtr.Zero, "MSTaskSwWClass", null);
@@ -33,7 +36,10 @@ namespace WorkingTimeRecorder
             rcMin_backup = rcMin;
             double form2top = (sHeight - rcMin.Top - 10) * 0.5;// 居中显示
             // 压缩任务栏大小
-            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width, rcMin.Bottom - rcMin.Top, true);
+            MoveWindow(hMin, 0, 0, rcMin.Right - rcMin.Left - this.Width, rcMin.Bottom - rcMin.Top, false);
+            //刷新任务栏以解决任务栏变黑的现象（SW_SHOWMINIMIZED=2，SW_SHOWDEFAULT=10）
+            ShowWindow(hBar, 2);
+            ShowWindow(hBar, 10);
             // 移动窗体至语言栏左侧
             MoveWindow(this.Handle, rcMin.Right - rcMin.Left - this.Width, (int)form2top, this.Width, this.Height, true);
             // 再次取得任务栏大小，作为监视对象
