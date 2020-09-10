@@ -132,7 +132,34 @@ namespace WorkingTimeRecorder
         {
             using (StreamWriter sw = new StreamWriter(savePath + time.yearMonth + "考勤时间.txt", true, Encoding.UTF8))
             {
-                sw.WriteLine("下班时间：" + endWorkTime);
+                // 判断是否跨月份
+                if (endWorkTime == DateTime.MinValue.ToString())
+                {
+                    Settings.Default.vacationDays++; // 每月第一天，休假自动加一
+                    Log.WriteLog($"休假天数自动加一，加一后天数为{Settings.Default.vacationDays}天");
+
+                    try
+                    {
+                        string lastPath = savePath + time.dateTime.AddMonths(-1).ToString("yyyyMM") + "工作时间.txt";
+                        string[] lines = File.ReadAllLines(lastPath);
+                        for (int i = lines.Length - 1; i >= 0; i--)
+                        {
+                            if (lines[i].Contains("锁定"))
+                            {
+                                sw.WriteLine("下班时间：" + lines[i].Remove(0, 7));
+                                break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.WriteLog(ex.Message);
+                    }
+                }
+                else
+                {
+                    sw.WriteLine("下班时间：" + endWorkTime);
+                }
                 sw.WriteLine("上班时间：" + startWorkTime);
                 sw.Close();
             }

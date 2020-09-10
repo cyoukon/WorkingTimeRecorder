@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace WorkingTimeRecorder
 {
-    public delegate void Messagedelegate();
+    public delegate void MessageDelegate();
 
     public partial class Form1 : Form
     {
@@ -16,6 +16,8 @@ namespace WorkingTimeRecorder
             InitializeComponent();
             this.label1.FontChanged += new System.EventHandler(this.LabelChanged);
             this.label2.VisibleChanged += new System.EventHandler(this.LabelChanged);
+            this.timer1.Tick += (s, e) => CheckTime();
+            this.label1.TextChanged += (s, e) => CheckTime();
 
             this.WindowState = Settings.Default.showMainForm ? FormWindowState.Normal : FormWindowState.Minimized;
         }
@@ -46,7 +48,8 @@ namespace WorkingTimeRecorder
 
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("确定要退出吗？", "WorkingTimeRecorder", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+            if (MessageBox.Show("确定要退出吗？", "WorkingTimeRecorder",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
             {
                 System.Environment.Exit(0);
             }
@@ -62,7 +65,7 @@ namespace WorkingTimeRecorder
                 y = Screen.PrimaryScreen.WorkingArea.Size.Height - this.Height + 40;
                 if (!label2.Visible)
                 {
-                    y = y +  label1.Height;
+                    y = y + label1.Height;
                 }
             }
             this.Location = new Point(x, y);
@@ -111,48 +114,6 @@ namespace WorkingTimeRecorder
             }
         }
 
-        /// <summary>
-        /// 每分钟运行一次，检查是否到了下班时间
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            DateTime.TryParse(Settings.Default.startWorkTime, out DateTime offTime);
-            offTime = offTime.AddHours(Settings.Default.inFoTime); // 下班时间 = 开始工作时间 + 工作时间
-            TimeSpan timeSpan = GetTime.GetTimeFormat(out bool result).dateTime - offTime;
-            double time = timeSpan.TotalHours;
-            if (time > -0.1 && time < 0)
-            {
-                timer1.Interval = (int)(-time * 3600000);
-            }
-            if (time >= 0)
-            {
-                timer1.Interval = 60000; // 恢复为1分钟一次
-
-                // 下班提醒 && 是否要显示提醒弹窗（每天只需要提醒一次）
-                if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
-                {
-                    Messagedelegate dgt = new Messagedelegate(() =>
-                    {
-                        MessageBox.Show("可以下班了", "WorkingTimeRecorder");
-                    });
-                    dgt.BeginInvoke(null, null);
-                    Settings.Default.inFoMessageBox = false;
-                    Settings.Default.Save();
-                }
-                // 显示已加班时间
-                if (Settings.Default.inFo2)
-                {
-                    this.label2.Visible = true;
-                    this.label2.Text = ("已加班 " + timeSpan).Substring(0, 9).Replace(":", "时") + "分";
-                    this.label2.Refresh();
-                }
-            }
-            else
-                this.label2.Visible = false;
-        }
-
         private void LabelChanged(object sender, EventArgs e)
         {
             this.SetLocation(Settings.Default.pointX, Settings.Default.pointY);
@@ -160,7 +121,8 @@ namespace WorkingTimeRecorder
 
         private void 打开log文件夹ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string savePath = string.IsNullOrEmpty(Settings.Default.savePath) ? System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase : Settings.Default.savePath;
+            string savePath = string.IsNullOrEmpty(Settings.Default.savePath) ?
+                System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase : Settings.Default.savePath;
             System.Diagnostics.Process.Start("explorer", savePath);
         }
 
@@ -168,12 +130,14 @@ namespace WorkingTimeRecorder
         {
             int x = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Width - 550;
             int y = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Height - this.Height - 150;
-            string input = Microsoft.VisualBasic.Interaction.InputBox("请按以下格式输入上班开始的时间：\r\nHH:mm:ss", "WorkingTimeRecorder", Settings.Default.startWorkTime.Remove(0, 11), x, y);
+            string input = Microsoft.VisualBasic.Interaction.InputBox("请按以下格式输入上班开始的时间：\r\nHH:mm:ss",
+                "WorkingTimeRecorder", Settings.Default.startWorkTime.Remove(0, 11), x, y);
             if (!string.IsNullOrEmpty(input))
             {
                 try
                 {
-                    DateTime.ParseExact(input, "HH:mm:ss", System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None);
+                    DateTime.ParseExact(input, "HH:mm:ss",
+                        System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None);
                     TimeLog.GetInstance().ReadWorkingTime(out string Label1, true, input.ToString());
                     this.label1.Text = Label1;
                     SetForm2Visible(Settings.Default.showInTaskBar);
@@ -194,6 +158,49 @@ namespace WorkingTimeRecorder
         {
             TimeLog.GetInstance().End();
             Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// 根据当前时间修改定时器间隔
+        /// 下班提醒
+        /// 更新已加班时间
+        /// </summary>
+        private void CheckTime()
+        {
+            DateTime.TryParse(Settings.Default.startWorkTime, out DateTime offTime);
+            offTime = offTime.AddHours(Settings.Default.inFoTime); // 下班时间 = 开始工作时间 + 工作时间
+            TimeSpan timeSpan = GetTime.GetTimeFormat(out bool result).dateTime - offTime;
+            double time = timeSpan.TotalHours;
+            if (time < 0)
+            {
+                timer1.Interval = (int)(-time * 3600000);
+                this.label2.Visible = false;
+            }
+            else
+            {
+                timer1.Interval = 60000; // 恢复为1分钟一次
+
+                // 下班提醒 && 是否要显示提醒弹窗（每天只需要提醒一次）
+                if (Settings.Default.inFo1 && Settings.Default.inFoMessageBox)
+                {
+                    MessageDelegate dgt = new MessageDelegate(() =>
+                    {
+                        MessageBox.Show($"现在是{GetTime.GetTimeFormat(out bool b).dateTime}，可以下班了", 
+                            "WorkingTimeRecorder", MessageBoxButtons.OK, MessageBoxIcon.Information,
+                            MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
+                    });
+                    dgt.BeginInvoke(null, null);
+                    Settings.Default.inFoMessageBox = false;
+                    Settings.Default.Save();
+                }
+                // 显示已加班时间
+                if (Settings.Default.inFo2)
+                {
+                    this.label2.Visible = true;
+                    this.label2.Text = ("已加班 " + timeSpan).Substring(0, 9).Replace(":", "时") + "分";
+                    this.label2.Refresh();
+                }
+            }
         }
     }
 }

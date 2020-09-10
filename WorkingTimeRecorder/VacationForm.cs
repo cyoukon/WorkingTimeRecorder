@@ -32,6 +32,7 @@ namespace WorkingTimeRecorder
         private void buttonSave_Click(object sender, EventArgs e)
         {
             Settings.Default.vacationDays = Convert.ToSingle(textBox1.Text);
+            Log.WriteLog($"手动修改了休假天数，修改后剩余天数为{Settings.Default.vacationDays}天");
             formSettings.SetLabelDaysOff(Settings.Default.vacationDays);
             this.Close();
         }

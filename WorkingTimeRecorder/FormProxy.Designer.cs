@@ -49,7 +49,6 @@
             this.checkBoxProxy.Location = new System.Drawing.Point(13, 13);
             this.checkBoxProxy.Name = "checkBoxProxy";
             this.checkBoxProxy.Size = new System.Drawing.Size(89, 19);
-            this.checkBoxProxy.TabIndex = 0;
             this.checkBoxProxy.Text = "使用代理";
             this.checkBoxProxy.UseVisualStyleBackColor = true;
             this.checkBoxProxy.CheckedChanged += new System.EventHandler(this.checkBoxProxy_CheckedChanged);
@@ -60,7 +59,6 @@
             this.labelProxy.Location = new System.Drawing.Point(13, 48);
             this.labelProxy.Name = "labelProxy";
             this.labelProxy.Size = new System.Drawing.Size(67, 15);
-            this.labelProxy.TabIndex = 1;
             this.labelProxy.Text = "代理地址";
             // 
             // textBoxProxy
@@ -68,7 +66,7 @@
             this.textBoxProxy.Location = new System.Drawing.Point(86, 45);
             this.textBoxProxy.Name = "textBoxProxy";
             this.textBoxProxy.Size = new System.Drawing.Size(161, 25);
-            this.textBoxProxy.TabIndex = 6;
+            this.textBoxProxy.TabIndex = 0;
             // 
             // labelPort
             // 
@@ -76,7 +74,6 @@
             this.labelPort.Location = new System.Drawing.Point(265, 48);
             this.labelPort.Name = "labelPort";
             this.labelPort.Size = new System.Drawing.Size(67, 15);
-            this.labelPort.TabIndex = 1;
             this.labelPort.Text = "代理端口";
             // 
             // textBoxPort
@@ -84,7 +81,7 @@
             this.textBoxPort.Location = new System.Drawing.Point(338, 45);
             this.textBoxPort.Name = "textBoxPort";
             this.textBoxPort.Size = new System.Drawing.Size(100, 25);
-            this.textBoxPort.TabIndex = 6;
+            this.textBoxPort.TabIndex = 1;
             // 
             // label2
             // 
@@ -92,7 +89,6 @@
             this.label2.Location = new System.Drawing.Point(13, 83);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 15);
-            this.label2.TabIndex = 1;
             this.label2.Text = "用户名";
             // 
             // textBoxName
@@ -100,7 +96,7 @@
             this.textBoxName.Location = new System.Drawing.Point(86, 80);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(161, 25);
-            this.textBoxName.TabIndex = 6;
+            this.textBoxName.TabIndex = 2;
             // 
             // label3
             // 
@@ -108,7 +104,6 @@
             this.label3.Location = new System.Drawing.Point(265, 83);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 15);
-            this.label3.TabIndex = 1;
             this.label3.Text = "密码";
             // 
             // textBoxPwd
@@ -116,7 +111,7 @@
             this.textBoxPwd.Location = new System.Drawing.Point(338, 80);
             this.textBoxPwd.Name = "textBoxPwd";
             this.textBoxPwd.Size = new System.Drawing.Size(100, 25);
-            this.textBoxPwd.TabIndex = 6;
+            this.textBoxPwd.TabIndex = 3;
             this.textBoxPwd.UseSystemPasswordChar = true;
             // 
             // buttonSave
@@ -124,7 +119,7 @@
             this.buttonSave.Location = new System.Drawing.Point(338, 121);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(80, 37);
-            this.buttonSave.TabIndex = 7;
+            this.buttonSave.TabIndex = 4;
             this.buttonSave.Text = "保存";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);

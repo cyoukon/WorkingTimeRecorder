@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Text;
+using System.Windows.Forms;
 
 namespace WorkingTimeRecorder
 {
@@ -84,8 +82,8 @@ namespace WorkingTimeRecorder
                     output = output.Split(new char[] { 'は', 'で' }, StringSplitOptions.RemoveEmptyEntries)[1].Replace('?', ' ');
                     break;
                 case "zh-CN":
-                    string[] str = output.Split(new string[] { "是" ,"\r\n"}, System.StringSplitOptions.RemoveEmptyEntries);
-                    for (int i = 0; i<str.Length; i++)
+                    string[] str = output.Split(new string[] { "是", "\r\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < str.Length; i++)
                     {
                         if (str[i].Contains("时间"))
                         {
@@ -109,6 +107,8 @@ namespace WorkingTimeRecorder
         /// <summary>
         /// 返回指定格式的时间
         /// </summary>
+        /// <param name="result">成功：true    失败：false</param>
+        /// <returns></returns>
         public static TimeFormat GetTimeFormat(out bool result)
         {
             result = true;
@@ -133,6 +133,31 @@ namespace WorkingTimeRecorder
             catch
             {
                 result = false;
+                string msg = "获取时间失败";
+
+                bool isOpen = false;
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (form is FormSettings)
+                    {
+                        isOpen = true;
+                        break;
+                    }
+                }
+                // 防止显示的内容与实际不符，仅在设置窗体没有打开时才进行此步
+                if (!isOpen)
+                {
+                    msg += "，\n已将时间获取方式切换为“本机时间”。";
+                    Settings.Default.comboBoxGetTime = 0;
+
+                    Log.WriteLog(msg.Replace("\n", " "));
+                }
+
+                System.Threading.Tasks.Task.Factory.StartNew(() => (
+                    MessageBox.Show(msg, "WorkingTimeRecorder",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error,
+                        MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
+                    ));
             }
             timeFormat.dateTime = dateTime;
             timeFormat.fullTime = dateTime.ToString("yyyy/MM/dd HH:mm:ss");
