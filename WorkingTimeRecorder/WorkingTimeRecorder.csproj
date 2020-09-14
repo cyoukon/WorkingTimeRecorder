@@ -88,6 +88,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="TimeLog.cs" />
+    <Compile Include="Update.cs" />
     <Compile Include="VacationForm.cs">
       <SubType>Form</SubType>
     </Compile>

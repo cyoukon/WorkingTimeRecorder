@@ -136,6 +136,7 @@ namespace WorkingTimeRecorder
                 if (endWorkTime == DateTime.MinValue.ToString())
                 {
                     Settings.Default.vacationDays++; // 每月第一天，休假自动加一
+                    Settings.Default.Save();
                     Log.WriteLog($"休假天数自动加一，加一后天数为{Settings.Default.vacationDays}天");
 
                     try
@@ -153,7 +154,7 @@ namespace WorkingTimeRecorder
                     }
                     catch (Exception ex)
                     {
-                        Log.WriteLog(ex.Message);
+                        Log.WriteLog(ex.ToString());
                     }
                 }
                 else
@@ -163,6 +164,7 @@ namespace WorkingTimeRecorder
                 sw.WriteLine("上班时间：" + startWorkTime);
                 sw.Close();
             }
+            new Update(true); // 自动检查更新
         }
     }
 }

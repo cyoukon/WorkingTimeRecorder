@@ -28,7 +28,7 @@ start WorkingTimeRecorder\bin\Release\WorkingTimeRecorder.exe
 goto end
 
 :fun3
-copy WorkingTimeRecorder.exe F:\_readonly_share\WorkingTimeRecorder.exe
+copy WorkingTimeRecorder.exe F:\_readonly_share\WorkingTimeRecorder\WorkingTimeRecorder.exe
 goto end
 
 :error
